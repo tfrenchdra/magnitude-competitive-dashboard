@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magnitude — Competitive Intelligence Dashboard | Digital Reach Agency</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+.container { display: flex; height: 100vh; overflow: hidden; }
+.sidebar { width: 280px; background-color: #111827; color: #f3f4f6; padding: 24px 0; overflow-y: auto; box-shadow: 2px 0 8px rgba(0,0,0,0.15); position: fixed; height: 100vh; left: 0; z-index: 1000; }
+.sidebar-header { padding: 0 24px 32px; border-bottom: 1px solid #374151; }
+.sidebar-logo { font-weight: 700; font-size: 16px; color: #1a56db; margin-bottom: 4px; letter-spacing: 0.5px; }
+.sidebar-subtitle { font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-nav { list-style: none; padding: 16px 0; }
+.sidebar-nav li { margin: 2px 0; }
+.nav-link { display: block; padding: 10px 24px; color: #d1d5db; text-decoration: none; font-size: 14px; transition: all 0.2s; border-left: 3px solid transparent; cursor: pointer; }
+.nav-link:hover { background-color: #1f2937; color: #fff; }
+.nav-link.active { background-color: #1f2937; color: #1a56db; border-left-color: #1a56db; font-weight: 600; }
+.main-content { margin-left: 280px; flex: 1; overflow-y: auto; padding: 0 0 40px; }
+.header { background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%); color: white; padding: 32px 40px; position: relative; }
+.header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.header p { font-size: 14px; opacity: 0.85; }
+.download-btn { position: absolute; top: 32px; right: 40px; background: white; color: #1a56db; border: none; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: all 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+.download-btn:hover:not(:disabled) { background: #f3f4f6; transform: translateY(-1px); }
+.download-btn:disabled { opacity: 0.7; cursor: wait; }
+.download-btn svg { width: 14px; height: 14px; }
+.section.print-show { display: block !important; }
+.pdf-rendering .sidebar { display: none; }
+.pdf-rendering .main-content { margin-left: 0; }
+.pdf-rendering .section { display: block !important; page-break-after: always; }
+.pdf-rendering .download-btn { display: none; }
+.pdf-rendering .nav-link { display: none; }
+.pdf-rendering .chart-container { page-break-inside: avoid; }
+.pdf-rendering .threat-card { page-break-inside: avoid; }
+.pdf-rendering .kpi-card { page-break-inside: avoid; }
+.info-card { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 8px; padding: 12px 20px; margin: 20px 40px 0; display: flex; align-items: flex-start; gap: 12px; }
+.info-icon { width: 20px; height: 20px; border-radius: 50%; background: #1565c0; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.info-card-text { font-size: 13px; color: #1565c0; line-height: 1.5; }
+.section { display: none; padding: 32px 40px; }
+.section.active { display: block; }
+.section-title { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+.section-desc { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 24px; max-width: 900px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 3px solid #1a56db; }
+.kpi-card.competitor-1 { border-top-color: #f59e0b; }
+.kpi-card.competitor-2 { border-top-color: #ef4444; }
+.kpi-card.competitor-3 { border-top-color: #10b981; }
+.kpi-card.competitor-4 { border-top-color: #8b5cf6; }
+.kpi-card.competitor-5 { border-top-color: #06b6d4; }
+.kpi-label { font-size: 12px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.5px; margin-bottom: 8px; }
+.kpi-value { font-size: 28px; font-weight: 700; color: #111827; }
+.kpi-domain { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+.chart-container { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 32px; position: relative; min-height: 400px; }
+.chart-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: #111827; }
+.chart-desc { font-size: 13px; color: #9ca3af; margin-bottom: 16px; line-height: 1.5; }
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.metrics-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f9fafb; border-bottom: 2px solid #e5e7eb; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; }
+td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+tr:hover { background: #f9fafb; }
+td a { color: #1a56db; text-decoration: none; word-break: break-all; }
+td a:hover { text-decoration: underline; }
+code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12px; color: #1f2937; }
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.tab-button { padding: 8px 20px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; color: #6b7280; transition: all 0.2s; font-weight: 600; }
+.tab-button.active { color: white; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.threat-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 16px; overflow: hidden; }
+.threat-header { padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+.threat-header.critical { background: #fef2f2; border-left: 4px solid #ef4444; }
+.threat-header.warning { background: #fffbeb; border-left: 4px solid #f59e0b; }
+.threat-header.opportunity { background: #ecfdf5; border-left: 4px solid #10b981; }
+.threat-severity { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 4px; }
+.threat-severity.critical { background: #fee2e2; color: #dc2626; }
+.threat-severity.warning { background: #fef3c7; color: #d97706; }
+.threat-severity.opportunity { background: #d1fae5; color: #059669; }
+.threat-title { font-size: 15px; font-weight: 600; color: #111827; }
+.threat-body { padding: 16px 24px 20px; font-size: 14px; color: #4b5563; line-height: 1.6; }
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.insight-box { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; }
+.insight-box h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #111827; }
+.insight-box p, .insight-box li { font-size: 13px; color: #4b5563; line-height: 1.6; }
+.insight-box ul { padding-left: 20px; }
+.footer { text-align: center; padding: 32px 40px; color: #9ca3af; font-size: 13px; border-top: 1px solid #e5e7eb; margin-top: 40px; }
+.delta-up { color: #10b981; font-weight: 600; }
+.delta-down { color: #ef4444; font-weight: 600; }
+.delta-flat { color: #6b7280; font-weight: 600; }
+@media (max-width: 1100px) { .charts-row, .metrics-grid, .insight-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">DIGITAL REACH AGENCY</div>
+      <div class="sidebar-subtitle">Competitive Intelligence</div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a class="nav-link active" onclick="switchSection('executive-summary', this)">Executive Summary</a></li>
+      <li><a class="nav-link" onclick="switchSection('sov-trends', this)">Share of Voice Trends</a></li>
+      <li><a class="nav-link" onclick="switchSection('authority-trends', this)">Authority Trends</a></li>
+      <li><a class="nav-link" onclick="switchSection('traffic-trends', this)">Organic Traffic Trends</a></li>
+      <li><a class="nav-link" onclick="switchSection('traffic-location', this)">Traffic by Location</a></li>
+      <li><a class="nav-link" onclick="switchSection('competitive-metrics', this)">Competitive Metrics</a></li>
+      <li><a class="nav-link" onclick="switchSection('top-pages', this)">Top Pages</a></li>
+      <li><a class="nav-link" onclick="switchSection('keyword-gap', this)">Keyword Gap Analysis</a></li>
+      <li><a class="nav-link" onclick="switchSection('aio-performance', this)">AI Overview Performance</a></li>
+      <li><a class="nav-link" onclick="switchSection('threats', this)">Strategic Threats &amp; Insights</a></li>
+    </ul>
+  </nav>
+
+  <div class="main-content">
+
+    <div class="header">
+      <h1>Magnitude — Competitive Intelligence Dashboard</h1>
+      <p>Pre-launch SEO/AEO baseline · archerfaris.ai vs 13 TPRM competitors · May 13, 2026 · US (with worldwide context where noted) · 14-month window: Apr 2025 – May 2026</p>
+      <button id="downloadBtn" class="download-btn" onclick="downloadPDF()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download PDF
+      </button>
+    </div>
+
+    <div class="info-card">
+      <div class="info-icon">i</div>
+      <div class="info-card-text">
+        <strong>AEO data note:</strong> Ahrefs Brand Radar (per-LLM citation tracking across ChatGPT, Perplexity, Gemini, Copilot, Grok) requires a paid add-on not enabled on the current subscription. AI Overview Performance section uses SERP-level AIO citation data as the closest available proxy. Recommend enabling Brand Radar before the June launch to baseline LLM citations from day one.
+      </div>
+    </div>
+
+    <!-- 1. EXECUTIVE SUMMARY -->
+    <section id="executive-summary" class="section active">
+      <h2 class="section-title">Executive Summary</h2>
+      <p class="section-desc">Snapshot of Magnitude's pre-launch baseline against the full TPRM competitive set. Direct rivals (Vanta, Drata, Lema, Whistic, Safe Security) plus the ratings adjacencies (Bitsight, SecurityScorecard, Black Kite) and editorial/vulnerability players (BlueVoyant, Panorays, ServiceNow). All numbers are US-market unless otherwise noted. Magnitude starts at zero on every metric — the dashboard quantifies the climb ahead.</p>
+
+      <div class="kpi-grid"><div class="kpi-card "><div class="kpi-label">Organic Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Organic Traffic / mo</div><div class="kpi-value">0</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Traffic Value</div><div class="kpi-value">$0</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Top-3 Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Domain Rating</div><div class="kpi-value">11</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Live Backlinks</div><div class="kpi-value">196</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">Referring Domains</div><div class="kpi-value">76</div><div class="kpi-domain">archerfaris.ai</div></div><div class="kpi-card "><div class="kpi-label">WW Organic KW</div><div class="kpi-value">0</div><div class="kpi-domain">archerfaris.ai</div></div></div>
+
+      <div class="chart-container">
+        <div class="chart-title">Head-to-Head Comparison — Magnitude + 5 Highlighted Competitors</div>
+        <div class="chart-desc">The closest positioning rival (Vanta, "Agentic TPRM"), the incumbent giant (ServiceNow), the editorial AEO leader (BlueVoyant), the agentic-pivoting peer (Drata), and the ratings leader (Bitsight). All metrics US unless noted WW (worldwide).</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Domain</th><th>Org KW</th><th>Org Traffic/mo</th><th>Traffic Value</th><th>Top-3 KW</th><th>DR</th><th>Backlinks</th><th>Refdomains</th><th>WW Traffic</th></tr></thead>
+          <tbody><tr>
+          <td><strong style="color:#1a56db;">Magnitude</strong></td>
+          <td>0</td>
+          <td>0</td>
+          <td>$0</td>
+          <td>0</td>
+          <td>11</td>
+          <td>196</td>
+          <td>76</td>
+          <td>0</td>
+        </tr><tr>
+          <td><strong style="color:#f59e0b;">Vanta</strong></td>
+          <td>3,348</td>
+          <td>62,147</td>
+          <td>$531.0K</td>
+          <td>1,083</td>
+          <td>86</td>
+          <td>1,554,971</td>
+          <td>10,501</td>
+          <td>176,036</td>
+        </tr><tr>
+          <td><strong style="color:#ef4444;">ServiceNow</strong></td>
+          <td>26,572</td>
+          <td>789,526</td>
+          <td>$2966.1K</td>
+          <td>9,659</td>
+          <td>87</td>
+          <td>1,727,305</td>
+          <td>29,790</td>
+          <td>1,600,939</td>
+        </tr><tr>
+          <td><strong style="color:#10b981;">BlueVoyant</strong></td>
+          <td>2,091</td>
+          <td>25,562</td>
+          <td>$113.8K</td>
+          <td>581</td>
+          <td>71</td>
+          <td>29,461</td>
+          <td>2,282</td>
+          <td>41,807</td>
+        </tr><tr>
+          <td><strong style="color:#8b5cf6;">Drata</strong></td>
+          <td>1,580</td>
+          <td>35,897</td>
+          <td>$567.9K</td>
+          <td>410</td>
+          <td>80</td>
+          <td>1,429,036</td>
+          <td>7,735</td>
+          <td>50,253</td>
+        </tr><tr>
+          <td><strong style="color:#06b6d4;">Bitsight</strong></td>
+          <td>3,970</td>
+          <td>35,585</td>
+          <td>$153.9K</td>
+          <td>1,335</td>
+          <td>76</td>
+          <td>1,853,324</td>
+          <td>8,208</td>
+          <td>68,417</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Organic Keywords vs Organic Traffic — Highlighted Set</div>
+        <div class="chart-desc">Bar comparison of US keyword footprint and monthly traffic. ServiceNow dwarfs the set; Vanta and Drata sit in the middle; Magnitude is zero.</div>
+        <div style="height:380px;"><canvas id="executiveBarChart"></canvas></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Full Competitive Landscape — All 13 Competitors + Magnitude</div>
+        <div class="chart-desc">The complete competitive set, grouped by category. Tier classification reflects threat profile in TPRM specifically, not overall company strength.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand / Domain</th><th>Category</th><th>DR</th><th>US Org KW</th><th>US Top 3</th><th>US Traffic/mo</th><th>US Value</th><th>WW Traffic/mo</th><th>Backlinks</th><th>Refdomains</th></tr></thead>
+          <tbody><tr>
+          <td><strong style="color:#1a56db;">Magnitude</strong><br><span style="color:#9ca3af;font-size:11px;">archerfaris.ai</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Baseline (Magnitude/Archer Faris)</span></td>
+          <td>11</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>$0</td>
+          <td>0</td>
+          <td>196</td>
+          <td>76</td>
+        </tr><tr>
+          <td><strong style="color:#f59e0b;">Vanta</strong><br><span style="color:#9ca3af;font-size:11px;">vanta.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC</span></td>
+          <td>86</td>
+          <td>3,348</td>
+          <td>1,083</td>
+          <td>62,147</td>
+          <td>$531.0K</td>
+          <td>176,036</td>
+          <td>1,554,971</td>
+          <td>10,501</td>
+        </tr><tr>
+          <td><strong style="color:#ef4444;">ServiceNow</strong><br><span style="color:#9ca3af;font-size:11px;">servicenow.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC</span></td>
+          <td>87</td>
+          <td>26,572</td>
+          <td>9,659</td>
+          <td>789,526</td>
+          <td>$3.0M</td>
+          <td>1,600,939</td>
+          <td>1,727,305</td>
+          <td>29,790</td>
+        </tr><tr>
+          <td><strong style="color:#10b981;">BlueVoyant</strong><br><span style="color:#9ca3af;font-size:11px;">bluevoyant.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Vulnerability</span></td>
+          <td>71</td>
+          <td>2,091</td>
+          <td>581</td>
+          <td>25,562</td>
+          <td>$113.8K</td>
+          <td>41,807</td>
+          <td>29,461</td>
+          <td>2,282</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Panorays</strong><br><span style="color:#9ca3af;font-size:11px;">panorays.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC (TPRM-specific)</span></td>
+          <td>63</td>
+          <td>1,198</td>
+          <td>275</td>
+          <td>7,798</td>
+          <td>$33.2K</td>
+          <td>12,777</td>
+          <td>14,514</td>
+          <td>1,803</td>
+        </tr><tr>
+          <td><strong style="color:#06b6d4;">Bitsight</strong><br><span style="color:#9ca3af;font-size:11px;">bitsight.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
+          <td>76</td>
+          <td>3,970</td>
+          <td>1,335</td>
+          <td>35,585</td>
+          <td>$153.9K</td>
+          <td>68,417</td>
+          <td>1,853,324</td>
+          <td>8,208</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">SecurityScorecard</strong><br><span style="color:#9ca3af;font-size:11px;">securityscorecard.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
+          <td>78</td>
+          <td>4,486</td>
+          <td>1,199</td>
+          <td>35,082</td>
+          <td>$93.2K</td>
+          <td>63,365</td>
+          <td>17,950,043</td>
+          <td>11,461</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Safe Security</strong><br><span style="color:#9ca3af;font-size:11px;">safe.security</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
+          <td>71</td>
+          <td>1,614</td>
+          <td>461</td>
+          <td>19,655</td>
+          <td>$67.3K</td>
+          <td>50,245</td>
+          <td>14,033</td>
+          <td>2,357</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Lema AI</strong><br><span style="color:#9ca3af;font-size:11px;">lema.ai</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
+          <td>34</td>
+          <td>9</td>
+          <td>0</td>
+          <td>19</td>
+          <td>$23</td>
+          <td>22</td>
+          <td>284</td>
+          <td>88</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Whistic</strong><br><span style="color:#9ca3af;font-size:11px;">whistic.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
+          <td>72</td>
+          <td>66</td>
+          <td>18</td>
+          <td>2,772</td>
+          <td>$4.4K</td>
+          <td>3,147</td>
+          <td>8,712</td>
+          <td>738</td>
+        </tr><tr>
+          <td><strong style="color:#8b5cf6;">Drata</strong><br><span style="color:#9ca3af;font-size:11px;">drata.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC</span></td>
+          <td>80</td>
+          <td>1,580</td>
+          <td>410</td>
+          <td>35,897</td>
+          <td>$567.9K</td>
+          <td>50,253</td>
+          <td>1,429,036</td>
+          <td>7,735</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Zania</strong><br><span style="color:#9ca3af;font-size:11px;">zania.ai</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
+          <td>24</td>
+          <td>1</td>
+          <td>1</td>
+          <td>90</td>
+          <td>$7</td>
+          <td>296</td>
+          <td>445</td>
+          <td>136</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Coverbase</strong><br><span style="color:#9ca3af;font-size:11px;">coverbase.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
+          <td>31</td>
+          <td>3</td>
+          <td>1</td>
+          <td>154</td>
+          <td>$564</td>
+          <td>154</td>
+          <td>6,240</td>
+          <td>274</td>
+        </tr><tr>
+          <td><strong style="color:#374151;">Black Kite</strong><br><span style="color:#9ca3af;font-size:11px;">blackkite.com</span></td>
+          <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
+          <td>63</td>
+          <td>57</td>
+          <td>13</td>
+          <td>1,134</td>
+          <td>$2.3K</td>
+          <td>1,626</td>
+          <td>9,200</td>
+          <td>1,374</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Vanta's Organic Competitor Landscape — Substitute View</div>
+        <div class="chart-desc">archerfaris.ai has zero ranking keywords pre-launch, so its organic-competitor list is empty. We show Vanta's (closest positioning rival) instead — these are the domains Magnitude will compete with as it builds keyword coverage. Notable: Vanta's strongest organic overlaps are with Secureframe, Sprinto, and Linford — direct compliance-automation rivals, not TPRM-pure plays.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Competitor</th><th>Common Keywords</th><th>Their Total Keywords</th><th>Their US Traffic</th></tr></thead>
+          <tbody><tr>
+          <td>secureframe.com</td>
+          <td>864</td>
+          <td>2,286</td>
+          <td>39,409</td>
+        </tr><tr>
+          <td>sprinto.com</td>
+          <td>642</td>
+          <td>2,433</td>
+          <td>19,886</td>
+        </tr><tr>
+          <td>linfordco.com</td>
+          <td>451</td>
+          <td>2,844</td>
+          <td>27,213</td>
+        </tr><tr>
+          <td>hipaajournal.com</td>
+          <td>444</td>
+          <td>14,112</td>
+          <td>163,832</td>
+        </tr><tr>
+          <td>fortinet.com</td>
+          <td>403</td>
+          <td>53,818</td>
+          <td>1,037,994</td>
+        </tr><tr>
+          <td>onetrust.com</td>
+          <td>401</td>
+          <td>3,377</td>
+          <td>44,813</td>
+        </tr><tr>
+          <td>a-lign.com</td>
+          <td>401</td>
+          <td>765</td>
+          <td>11,632</td>
+        </tr><tr>
+          <td>paloaltonetworks.com</td>
+          <td>392</td>
+          <td>28,407</td>
+          <td>491,491</td>
+        </tr><tr>
+          <td>metricstream.com</td>
+          <td>331</td>
+          <td>4,009</td>
+          <td>46,947</td>
+        </tr><tr>
+          <td>aicpa-cima.com</td>
+          <td>295</td>
+          <td>8,241</td>
+          <td>121,350</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- 2. SHARE OF VOICE TRENDS -->
+    <section id="sov-trends" class="section">
+      <h2 class="section-title">Share of Voice Trends</h2>
+      <p class="section-desc">How each domain's slice of the highlighted set's combined organic traffic has shifted across the 14-month window. Magnitude has been zero throughout the window — the chart visualizes the climb ahead.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">Share of Voice — Stacked Organic Traffic %</div>
+        <div class="chart-desc">Each domain's share of the highlighted set's monthly organic traffic. ServiceNow dominates with single-page traffic spikes; Vanta has been climbing steadily; Drata's growth slowed in May 2026.</div>
+        <div style="height:420px;"><canvas id="sovChart"></canvas></div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-container">
+          <div class="chart-title">Raw Organic Traffic — All Domains</div>
+          <div class="chart-desc">Absolute monthly US traffic, log scale. Magnitude flat at zero; ServiceNow on top with single-page spikes; BlueVoyant in measurable decline.</div>
+          <div style="height:340px;"><canvas id="rawTrafficChart"></canvas></div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Traffic Value Trend (USD)</div>
+          <div class="chart-desc">Estimated value of organic traffic if bought through paid search ($K/mo, log scale).</div>
+          <div style="height:340px;"><canvas id="trafficValueChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. AUTHORITY TRENDS -->
+    <section id="authority-trends" class="section">
+      <h2 class="section-title">Authority Trends</h2>
+      <p class="section-desc">14-month Domain Rating and referring-domain growth across the highlighted set. Magnitude's DR jumped from 1.5 to 11 in the last two months — the pre-launch buildup landing as Sean's press and link-acquisition work compounds.</p>
+
+      <div class="charts-row">
+        <div class="chart-container">
+          <div class="chart-title">Domain Rating History</div>
+          <div class="chart-desc">Monthly DR over 14 months. ServiceNow is essentially flat at the ceiling (85→87); Vanta is on a steady climb (78→86); Magnitude's recent spike reflects pre-launch link acquisition.</div>
+          <div style="height:380px;"><canvas id="drChart"></canvas></div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-title">Referring Domains Growth (log scale)</div>
+          <div class="chart-desc">14-month refdomain growth. Drata leads percent growth (+170%); ServiceNow leads absolute count (~30K); Magnitude growing fast off a tiny base (14 → 76).</div>
+          <div style="height:380px;"><canvas id="refdChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ORGANIC TRAFFIC TRENDS -->
+    <section id="traffic-trends" class="section">
+      <h2 class="section-title">Organic Traffic Trends</h2>
+      <p class="section-desc">14-month US organic traffic history. ServiceNow's wild monthly swings (533K to 1.4M) are news-cycle / single-page volatility, not steady trend. BlueVoyant is in clear decline (-44% over 14 months). Vanta is on a steady upward grind (+29%).</p>
+
+      <div class="chart-container">
+        <div class="chart-title">US Organic Traffic — Monthly (log scale)</div>
+        <div class="chart-desc">All highlighted domains charted on log scale to make Magnitude (0) and Bitsight/Drata (~25–40K) visible on the same axis as ServiceNow (500K+).</div>
+        <div style="height:480px;"><canvas id="trafficTrendsChart"></canvas></div>
+      </div>
+    </section>
+
+    <!-- 5. TRAFFIC BY LOCATION -->
+    <section id="traffic-location" class="section">
+      <h2 class="section-title">Traffic by Location</h2>
+      <p class="section-desc">archerfaris.ai has zero organic traffic, so its country breakdown is empty. We show Vanta's top 10 as a category-leader baseline — notable that India ranks above the US for Vanta. A useful preview of where Magnitude's eventual geo distribution might land as the brand scales globally.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">Top 10 Countries — Vanta (Category-Leader Proxy)</div>
+        <div class="chart-desc">Monthly organic traffic by country. India tops the list at 68.5K/mo, US second at 62.1K/mo — a 10% gap that's surprising given Vanta is a US-incorporated company.</div>
+        <div style="height:480px;"><canvas id="countryChart"></canvas></div>
+      </div>
+    </section>
+
+    <!-- 6. COMPETITIVE METRICS -->
+    <section id="competitive-metrics" class="section">
+      <h2 class="section-title">Competitive Metrics — Today</h2>
+      <p class="section-desc">Six head-to-head bar charts on point-in-time metrics. Magnitude (DRA blue) sits at the floor of every chart — the visual baseline of the climb ahead.</p>
+
+      <div class="metrics-grid">
+        <div class="chart-container"><div class="chart-title">Domain Rating</div><div style="height:280px;"><canvas id="barDR"></canvas></div></div>
+        <div class="chart-container"><div class="chart-title">Referring Domains</div><div style="height:280px;"><canvas id="barRefd"></canvas></div></div>
+        <div class="chart-container"><div class="chart-title">Live Backlinks (log)</div><div style="height:280px;"><canvas id="barBacklinks"></canvas></div></div>
+        <div class="chart-container"><div class="chart-title">US Organic Traffic / mo (log)</div><div style="height:280px;"><canvas id="barTraffic"></canvas></div></div>
+        <div class="chart-container"><div class="chart-title">US Organic Keywords</div><div style="height:280px;"><canvas id="barKW"></canvas></div></div>
+        <div class="chart-container"><div class="chart-title">US Traffic Value ($K/mo, log)</div><div style="height:280px;"><canvas id="barValue"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- 7. TOP PAGES -->
+    <section id="top-pages" class="section">
+      <h2 class="section-title">Top Pages</h2>
+      <p class="section-desc">Top-traffic pages by domain (US). Tabs cover the highlighted set; Magnitude is empty (pre-launch). Note ServiceNow's TPRM page itself is buried — their traffic comes from Performance Analytics and ITSM, not TPRM. Vanta's TPRM landing page is at the brand's homepage. BlueVoyant's TPRM "Complete Guide" is #5 on their own site by traffic — the editorial play.</p>
+
+      <div class="tabs"><button class="tab-button active" data-tab="pane-0" style="border-color:#1a56db;color:#fff;background:#1a56db;">Magnitude</button><button class="tab-button " data-tab="pane-1" style="border-color:#f59e0b;color:#f59e0b;">Vanta</button><button class="tab-button " data-tab="pane-2" style="border-color:#ef4444;color:#ef4444;">ServiceNow</button><button class="tab-button " data-tab="pane-3" style="border-color:#10b981;color:#10b981;">BlueVoyant</button><button class="tab-button " data-tab="pane-4" style="border-color:#8b5cf6;color:#8b5cf6;">Drata</button><button class="tab-button " data-tab="pane-5" style="border-color:#06b6d4;color:#06b6d4;">Bitsight</button></div>
+      <div id="pane-0" class="tab-content active"><div style="padding:32px;text-align:center;color:#9ca3af;font-style:italic;">No top-pages data for Magnitude (pre-launch — zero organic footprint).</div></div><div id="pane-1" class="tab-content "><div style="overflow-x:auto;"><table>
+              <thead><tr><th>URL</th><th>US Traffic / mo</th><th>Keywords</th><th>Top Keyword</th></tr></thead>
+              <tbody><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/" target="_blank">https://www.vanta.com/</a></td>
+                  <td>16,670</td>
+                  <td>114</td>
+                  <td>vanta</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/collection/grc/risk-management-frameworks" target="_blank">https://www.vanta.com/collection/grc/risk-management-frameworks</a></td>
+                  <td>2,699</td>
+                  <td>9</td>
+                  <td>risk management frameworks</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/company/careers" target="_blank">https://www.vanta.com/company/careers</a></td>
+                  <td>1,971</td>
+                  <td>37</td>
+                  <td>vanta careers</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/collection/soc-2/what-is-soc-2" target="_blank">https://www.vanta.com/collection/soc-2/what-is-soc-2</a></td>
+                  <td>1,464</td>
+                  <td>170</td>
+                  <td>soc 2</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/products/automated-compliance" target="_blank">https://www.vanta.com/products/automated-compliance</a></td>
+                  <td>1,419</td>
+                  <td>33</td>
+                  <td>compliance automation tools</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/products/risk" target="_blank">https://www.vanta.com/products/risk</a></td>
+                  <td>1,345</td>
+                  <td>47</td>
+                  <td>risk assessment software</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/resources/best-gdpr-compliance-software" target="_blank">https://www.vanta.com/resources/best-gdpr-compliance-software</a></td>
+                  <td>1,332</td>
+                  <td>36</td>
+                  <td>gdpr compliance software</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/glossary/compliance-software" target="_blank">https://www.vanta.com/glossary/compliance-software</a></td>
+                  <td>1,130</td>
+                  <td>43</td>
+                  <td>compliance software</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/collection/soc-2/soc-1-vs-soc-2-which-one-do-you-need" target="_blank">https://www.vanta.com/collection/soc-2/soc-1-vs-soc-2-which-one-do-you-need</a></td>
+                  <td>1,110</td>
+                  <td>93</td>
+                  <td>soc 1 vs soc 2</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.vanta.com/products/soc-2" target="_blank">https://www.vanta.com/products/soc-2</a></td>
+                  <td>938</td>
+                  <td>24</td>
+                  <td>vanta</td>
+                </tr></tbody></table></div></div><div id="pane-2" class="tab-content "><div style="overflow-x:auto;"><table>
+              <thead><tr><th>URL</th><th>US Traffic / mo</th><th>Keywords</th><th>Top Keyword</th></tr></thead>
+              <tbody><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/" target="_blank">https://www.servicenow.com/</a></td>
+                  <td>131,286</td>
+                  <td>645</td>
+                  <td>servicenow</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/products/performance-analytics.html" target="_blank">https://www.servicenow.com/products/performance-analytics.html</a></td>
+                  <td>112,119</td>
+                  <td>18</td>
+                  <td>performance analytics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/community/platform-analytics-articles/getting-started-with-performance-analytics-platform-analytics/ta-p/2469736" target="_blank">https://www.servicenow.com/community/platform-analytics-articles/getting-started-with-performance-analytics-platform-analytics/ta-p/2469736</a></td>
+                  <td>29,430</td>
+                  <td>11</td>
+                  <td>performance analytics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://careers.servicenow.com/" target="_blank">https://careers.servicenow.com/</a></td>
+                  <td>21,311</td>
+                  <td>346</td>
+                  <td>servicenow careers</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/community/itsm-forum/what-is-performance-analytics/m-p/3420015" target="_blank">https://www.servicenow.com/community/itsm-forum/what-is-performance-analytics/m-p/3420015</a></td>
+                  <td>19,108</td>
+                  <td>5</td>
+                  <td>performance analytics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/community/performance-analytics-forum/difference-between-performance-and-platform-analytics/m-p/2813225" target="_blank">https://www.servicenow.com/community/performance-analytics-forum/difference-between-performance-and-platform-analytics/m-p/2813225</a></td>
+                  <td>19,096</td>
+                  <td>3</td>
+                  <td>performance analytics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/docs/r/washingtondc/now-intelligence/performance-analytics/c_PerformanceAnalytics.html" target="_blank">https://www.servicenow.com/docs/r/washingtondc/now-intelligence/performance-analytics/c_PerformanceAnalytics.html</a></td>
+                  <td>12,045</td>
+                  <td>6</td>
+                  <td>performance analytics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://developer.servicenow.com/" target="_blank">https://developer.servicenow.com/</a></td>
+                  <td>10,754</td>
+                  <td>180</td>
+                  <td>servicenow developer</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://careers.servicenow.com/jobs/" target="_blank">https://careers.servicenow.com/jobs/</a></td>
+                  <td>9,637</td>
+                  <td>136</td>
+                  <td>servicenow jobs</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.servicenow.com/what-is-servicenow.html" target="_blank">https://www.servicenow.com/what-is-servicenow.html</a></td>
+                  <td>8,209</td>
+                  <td>139</td>
+                  <td>what is servicenow</td>
+                </tr></tbody></table></div></div><div id="pane-3" class="tab-content "><div style="overflow-x:auto;"><table>
+              <thead><tr><th>URL</th><th>US Traffic / mo</th><th>Keywords</th><th>Top Keyword</th></tr></thead>
+              <tbody><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/" target="_blank">https://www.bluevoyant.com/</a></td>
+                  <td>3,040</td>
+                  <td>8</td>
+                  <td>bluevoyant</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/get-started-with-these-9-open-source-tools" target="_blank">https://www.bluevoyant.com/knowledge-center/get-started-with-these-9-open-source-tools</a></td>
+                  <td>2,299</td>
+                  <td>118</td>
+                  <td>digital forensics tools</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/5-types-of-cyber-insurance-coverage-and-what-to-watch-out-for" target="_blank">https://www.bluevoyant.com/knowledge-center/5-types-of-cyber-insurance-coverage-and-what-to-watch-out-for</a></td>
+                  <td>1,882</td>
+                  <td>178</td>
+                  <td>cyber insurance</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/penetration-testing-complete-guide-to-process-types-and-tools" target="_blank">https://www.bluevoyant.com/knowledge-center/penetration-testing-complete-guide-to-process-types-and-tools</a></td>
+                  <td>1,479</td>
+                  <td>88</td>
+                  <td>penetration testing</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/third-party-risk-management-tprm-a-complete-guide" target="_blank">https://www.bluevoyant.com/knowledge-center/third-party-risk-management-tprm-a-complete-guide</a></td>
+                  <td>1,409</td>
+                  <td>87</td>
+                  <td>tprm</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/what-is-azure-sentinel-renamed-to-microsoft-sentinel" target="_blank">https://www.bluevoyant.com/knowledge-center/what-is-azure-sentinel-renamed-to-microsoft-sentinel</a></td>
+                  <td>908</td>
+                  <td>45</td>
+                  <td>microsoft sentinel</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/understanding-digital-forensics-process-techniques-and-tools" target="_blank">https://www.bluevoyant.com/knowledge-center/understanding-digital-forensics-process-techniques-and-tools</a></td>
+                  <td>803</td>
+                  <td>128</td>
+                  <td>what is digital forensics</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/what-is-incident-response-process-frameworks-and-tools" target="_blank">https://www.bluevoyant.com/knowledge-center/what-is-incident-response-process-frameworks-and-tools</a></td>
+                  <td>795</td>
+                  <td>54</td>
+                  <td>incident response process</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/supply-chain-attacks-7-examples-and-4-defensive-strategies" target="_blank">https://www.bluevoyant.com/knowledge-center/supply-chain-attacks-7-examples-and-4-defensive-strategies</a></td>
+                  <td>793</td>
+                  <td>42</td>
+                  <td>supply chain cyber attacks</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bluevoyant.com/knowledge-center/top-8-incident-response-plan-templates" target="_blank">https://www.bluevoyant.com/knowledge-center/top-8-incident-response-plan-templates</a></td>
+                  <td>697</td>
+                  <td>64</td>
+                  <td>incident response plan example</td>
+                </tr></tbody></table></div></div><div id="pane-4" class="tab-content "><div style="overflow-x:auto;"><table>
+              <thead><tr><th>URL</th><th>US Traffic / mo</th><th>Keywords</th><th>Top Keyword</th></tr></thead>
+              <tbody><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/" target="_blank">https://drata.com/</a></td>
+                  <td>21,152</td>
+                  <td>77</td>
+                  <td>drata</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/learn/soc-2/type-2-overview" target="_blank">https://drata.com/learn/soc-2/type-2-overview</a></td>
+                  <td>1,877</td>
+                  <td>129</td>
+                  <td>soc 2 type 2</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/about/careers" target="_blank">https://drata.com/about/careers</a></td>
+                  <td>745</td>
+                  <td>18</td>
+                  <td>drata</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/blog/hipaa-release-forms" target="_blank">https://drata.com/blog/hipaa-release-forms</a></td>
+                  <td>712</td>
+                  <td>185</td>
+                  <td>hipaa waiver form</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://help.drata.com/en/articles/6232796-example-business-continuity-plan" target="_blank">https://help.drata.com/en/articles/6232796-example-business-continuity-plan</a></td>
+                  <td>565</td>
+                  <td>54</td>
+                  <td>disaster recovery and business continuity plan example</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/about" target="_blank">https://drata.com/about</a></td>
+                  <td>563</td>
+                  <td>23</td>
+                  <td>drata</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://app.drata.com/" target="_blank">https://app.drata.com/</a></td>
+                  <td>522</td>
+                  <td>3</td>
+                  <td>drata login</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://help.drata.com/en/articles/9792194-what-is-a-subprocessor" target="_blank">https://help.drata.com/en/articles/9792194-what-is-a-subprocessor</a></td>
+                  <td>516</td>
+                  <td>15</td>
+                  <td>subprocessors</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/demo" target="_blank">https://drata.com/demo</a></td>
+                  <td>499</td>
+                  <td>5</td>
+                  <td>drata</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://drata.com/security" target="_blank">https://drata.com/security</a></td>
+                  <td>451</td>
+                  <td>13</td>
+                  <td>drata</td>
+                </tr></tbody></table></div></div><div id="pane-5" class="tab-content "><div style="overflow-x:auto;"><table>
+              <thead><tr><th>URL</th><th>US Traffic / mo</th><th>Keywords</th><th>Top Keyword</th></tr></thead>
+              <tbody><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/" target="_blank">https://www.bitsight.com/</a></td>
+                  <td>4,026</td>
+                  <td>110</td>
+                  <td>bitsight</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/vendor-risk-management-definition" target="_blank">https://www.bitsight.com/blog/vendor-risk-management-definition</a></td>
+                  <td>1,512</td>
+                  <td>75</td>
+                  <td>vendor risk management</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/guide-phishing-examples-prevention-more" target="_blank">https://www.bitsight.com/blog/guide-phishing-examples-prevention-more</a></td>
+                  <td>1,334</td>
+                  <td>72</td>
+                  <td>what is a phishing link</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/7-cybersecurity-frameworks-to-reduce-cyber-risk" target="_blank">https://www.bitsight.com/blog/7-cybersecurity-frameworks-to-reduce-cyber-risk</a></td>
+                  <td>1,038</td>
+                  <td>104</td>
+                  <td>cybersecurity framework examples</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/what-is-malware" target="_blank">https://www.bitsight.com/blog/what-is-malware</a></td>
+                  <td>989</td>
+                  <td>25</td>
+                  <td>what is malware</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/cybersecurity-risk-assessment-templates" target="_blank">https://www.bitsight.com/blog/cybersecurity-risk-assessment-templates</a></td>
+                  <td>902</td>
+                  <td>76</td>
+                  <td>cybersecurity risk assessment</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/what-is-cybersecurity-compliance" target="_blank">https://www.bitsight.com/blog/what-is-cybersecurity-compliance</a></td>
+                  <td>836</td>
+                  <td>50</td>
+                  <td>cybersecurity compliance</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/glossary/non-repudiation-cyber-security" target="_blank">https://www.bitsight.com/glossary/non-repudiation-cyber-security</a></td>
+                  <td>823</td>
+                  <td>68</td>
+                  <td>non-repudiation</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/types-of-penetration-testing-which-is-right-for-your-business" target="_blank">https://www.bitsight.com/blog/types-of-penetration-testing-which-is-right-for-your-business</a></td>
+                  <td>575</td>
+                  <td>87</td>
+                  <td>pen test</td>
+                </tr><tr>
+                  <td style="max-width:480px;word-wrap:break-word;"><a href="https://www.bitsight.com/blog/ultimate-guide-tprm-what-third-party-risk-management" target="_blank">https://www.bitsight.com/blog/ultimate-guide-tprm-what-third-party-risk-management</a></td>
+                  <td>551</td>
+                  <td>56</td>
+                  <td>what is tprm</td>
+                </tr></tbody></table></div></div>
+    </section>
+
+    <!-- 8. KEYWORD GAP ANALYSIS -->
+    <section id="keyword-gap" class="section">
+      <h2 class="section-title">Keyword Gap Analysis</h2>
+      <p class="section-desc">Top 25 TPRM-related keywords competitors currently rank for, that Magnitude does not. Aggregated from each competitor's TPRM page rankings (sorted by search volume). Each row shows which competitor is currently best-ranked — these are the targets Magnitude needs to displace or out-rank.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">Top 25 TPRM Keyword Opportunities</div>
+        <div class="chart-desc">Non-branded keywords competitors rank for. The biggest-volume opportunities (<code>tprm</code> 3,700/mo, <code>third party risk management</code> 3,000/mo, <code>what is tprm</code> 1,000/mo) are dominated by editorial guides — Magnitude needs editorial content to compete, not product pages.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Keyword</th><th>Volume</th><th>Difficulty (KD)</th><th>Best-ranked Competitor</th><th>Their Traffic</th></tr></thead>
+          <tbody><tr>
+          <td><code>tprm</code></td>
+          <td>3,700</td>
+          <td>27</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#1)</td>
+          <td>207</td>
+        </tr><tr>
+          <td><code>black kite</code></td>
+          <td>3,300</td>
+          <td>28</td>
+          <td><strong style="color:#374151;">Black Kite</strong> (#3)</td>
+          <td>231</td>
+        </tr><tr>
+          <td><code>third party risk management</code></td>
+          <td>3,000</td>
+          <td>33</td>
+          <td><strong style="color:#374151;">SecurityScorecard</strong> (#1)</td>
+          <td>0</td>
+        </tr><tr>
+          <td><code>what is tprm</code></td>
+          <td>1,000</td>
+          <td>13</td>
+          <td><strong style="color:#ef4444;">ServiceNow</strong> (#1)</td>
+          <td>93</td>
+        </tr><tr>
+          <td><code>tprm meaning</code></td>
+          <td>1,000</td>
+          <td>10</td>
+          <td><strong style="color:#ef4444;">ServiceNow</strong> (#5)</td>
+          <td>98</td>
+        </tr><tr>
+          <td><code>third-party risk management</code></td>
+          <td>900</td>
+          <td>26</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#3)</td>
+          <td>18</td>
+        </tr><tr>
+          <td><code>third party risk management software</code></td>
+          <td>800</td>
+          <td>15</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#10)</td>
+          <td>26</td>
+        </tr><tr>
+          <td><code>third-party risk management software</code></td>
+          <td>700</td>
+          <td>17</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#9)</td>
+          <td>20</td>
+        </tr><tr>
+          <td><code>soc 2 compliance software</code></td>
+          <td>600</td>
+          <td>6</td>
+          <td><strong style="color:#f59e0b;">Vanta</strong> (#1)</td>
+          <td>235</td>
+        </tr><tr>
+          <td><code>third party vendor risk management</code></td>
+          <td>500</td>
+          <td>24</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#3)</td>
+          <td>73</td>
+        </tr><tr>
+          <td><code>third party cyber risk management</code></td>
+          <td>500</td>
+          <td>14</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#2)</td>
+          <td>117</td>
+        </tr><tr>
+          <td><code>what is third party risk management</code></td>
+          <td>400</td>
+          <td>18</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#3)</td>
+          <td>12</td>
+        </tr><tr>
+          <td><code>third party risk management solutions</code></td>
+          <td>400</td>
+          <td>10</td>
+          <td><strong style="color:#06b6d4;">Bitsight</strong> (#4)</td>
+          <td>45</td>
+        </tr><tr>
+          <td><code>third party vendor management</code></td>
+          <td>400</td>
+          <td>6</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#10)</td>
+          <td>13</td>
+        </tr><tr>
+          <td><code>3rd party risk management</code></td>
+          <td>400</td>
+          <td>26</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#10)</td>
+          <td>12</td>
+        </tr><tr>
+          <td><code>third party risk monitoring</code></td>
+          <td>350</td>
+          <td>24</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#3)</td>
+          <td>54</td>
+        </tr><tr>
+          <td><code>third party risk management solution</code></td>
+          <td>350</td>
+          <td>12</td>
+          <td><strong style="color:#374151;">Panorays</strong> (#8)</td>
+          <td>16</td>
+        </tr><tr>
+          <td><code>automated compliance software</code></td>
+          <td>300</td>
+          <td>10</td>
+          <td><strong style="color:#8b5cf6;">Drata</strong> (#7)</td>
+          <td>17</td>
+        </tr><tr>
+          <td><code>tprm solutions</code></td>
+          <td>250</td>
+          <td>8</td>
+          <td><strong style="color:#06b6d4;">Bitsight</strong> (#6)</td>
+          <td>21</td>
+        </tr><tr>
+          <td><code>cyber risk management platform</code></td>
+          <td>250</td>
+          <td>70</td>
+          <td><strong style="color:#374151;">Black Kite</strong> (#7)</td>
+          <td>13</td>
+        </tr><tr>
+          <td><code>managing third party risk</code></td>
+          <td>200</td>
+          <td>20</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#2)</td>
+          <td>68</td>
+        </tr><tr>
+          <td><code>third party risk management program</code></td>
+          <td>200</td>
+          <td>19</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#3)</td>
+          <td>32</td>
+        </tr><tr>
+          <td><code>tprm process</code></td>
+          <td>200</td>
+          <td>2</td>
+          <td><strong style="color:#10b981;">BlueVoyant</strong> (#2)</td>
+          <td>26</td>
+        </tr><tr>
+          <td><code>third party risk management companies</code></td>
+          <td>200</td>
+          <td>6</td>
+          <td><strong style="color:#06b6d4;">Bitsight</strong> (#3)</td>
+          <td>29</td>
+        </tr><tr>
+          <td><code>tprm solution</code></td>
+          <td>200</td>
+          <td>10</td>
+          <td><strong style="color:#06b6d4;">Bitsight</strong> (#9)</td>
+          <td>7</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- 9. AI OVERVIEW PERFORMANCE -->
+    <section id="aio-performance" class="section">
+      <h2 class="section-title">AI Overview Performance</h2>
+      <p class="section-desc">Google AI Overview citation status for the high-volume TPRM query set. Shows which queries trigger AIOs and which domains earn AIO sitelink real estate. Magnitude has zero AIO citations today — competitors are stacking them.</p>
+
+      <div class="chart-container">
+        <div class="chart-title">AIO Citation Baseline — 10 TPRM Queries</div>
+        <div class="chart-desc">For each query: search volume, whether the SERP triggers an AI Overview, the cited sitelink domains, and the top 5 organic results. Editorial guides dominate citations; product pages rarely earn AIO real estate.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Query</th><th>Volume</th><th>AIO Present?</th><th>AIO-Cited Domains</th><th>Top Organic (first 5)</th></tr></thead>
+          <tbody><tr>
+          <td><code>third party risk management</code></td>
+          <td>3000</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">occ.gov, ibm.com, onetrust.com, gartner.com, securityscorecard.com, cybersaint.io, cbh.com, upguard.com, youtube.com (Prevalent), onspring.com</td>
+          <td style="font-size:12px;color:#6b7280;">ibm.com (#2), onetrust.com (#4), gartner.com (#5), fusionrm.com (#6), servicenow.com (#7)</td>
+        </tr><tr>
+          <td><code>tprm</code></td>
+          <td>3700</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">panorays.com, ibm.com, bluevoyant.com</td>
+          <td style="font-size:12px;color:#6b7280;">ibm.com (#2), bluevoyant.com (#4), servicenow.com (#5), panorays.com (#6), tprassociation.org (#7)</td>
+        </tr><tr>
+          <td><code>third party risk management software</code></td>
+          <td>800</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">reddit.com, upguard.com, vanta.com (Agentic TPRM)</td>
+          <td style="font-size:12px;color:#6b7280;">reddit.com (#2), gartner.com (#3), riskonnect.com (#4), upguard.com (#6), aravo.com (#7)</td>
+        </tr><tr>
+          <td><code>vendor risk management</code></td>
+          <td>—</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">bitsight.com (#2), panorays.com (#3), onetrust.com (#4), logicmanager.com (#5), servicenow.com (#7)</td>
+        </tr><tr>
+          <td><code>best third party risk management software</code></td>
+          <td>—</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">gartner.com (#1), reddit.com (#2), riskonnect.com (#6), bitsight.com (#7), onetrust.com (#8)</td>
+        </tr><tr>
+          <td><code>what is tprm</code></td>
+          <td>1000</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">sentinelone.com, bitsight.com, servicenow.com</td>
+          <td style="font-size:12px;color:#6b7280;">ibm.com (#2), bitsight.com (#4), servicenow.com (#5), apexanalytix.com (#6), onetrust.com (#7)</td>
+        </tr><tr>
+          <td><code>tprm solutions</code></td>
+          <td>—</td>
+          <td><span style="background:#f59e0b20;color:#f59e0b;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">No data</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">—</td>
+        </tr><tr>
+          <td><code>agentic vendor risk management</code></td>
+          <td>—</td>
+          <td><span style="background:#f59e0b20;color:#f59e0b;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">No data</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">—</td>
+        </tr><tr>
+          <td><code>ai vendor risk management</code></td>
+          <td>—</td>
+          <td><span style="background:#f59e0b20;color:#f59e0b;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">No data</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">—</td>
+        </tr><tr>
+          <td><code>third party risk management solutions</code></td>
+          <td>400</td>
+          <td><span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">Yes</span></td>
+          <td style="font-size:12px;">—</td>
+          <td style="font-size:12px;color:#6b7280;">gartner.com (#2), upguard.com (#3), bitsight.com (#4), reddit.com (#5), riskonnect.com (#7)</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-box">
+          <h4>Where Magnitude can plant the flag</h4>
+          <p><code>agentic vendor risk management</code> and <code>ai vendor risk management</code> return <strong>zero Ahrefs SERP data</strong>. No competitor has indexed content for these category-defining queries. First-mover advantage is open today.</p>
+        </div>
+        <div class="insight-box">
+          <h4>Most-cited AIO domains</h4>
+          <p>SecurityScorecard (cited 2× on "third party risk management"), Panorays, BlueVoyant, IBM, OneTrust, Gartner, ServiceNow, Bitsight. Format matters: every AIO citation in the snapshot is to an editorial guide, not a product page.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. STRATEGIC THREATS -->
+    <section id="threats" class="section">
+      <h2 class="section-title">Strategic Threats &amp; Insights</h2>
+      <p class="section-desc">The competitive picture distilled into prioritized action items. Severity reflects size of the gap and speed at which it is widening.</p>
+      <div class="threat-card">
+          <div class="threat-header critical">
+            <span class="threat-severity critical">Critical</span>
+            <span class="threat-title">Vanta has claimed Magnitude's positioning — 'Agentic TPRM' is already AIO-cited</span>
+          </div>
+          <div class="threat-body">Vanta (DR 86, 62,147 US org traffic/mo) rebranded its TPRM product page to <strong>"Agentic Third Party Risk Management"</strong> and is being cited in Google's AI Overview for <code>third party risk management software</code>. Vanta's 14-month US traffic is up <strong>+28%</strong>; DR climbed <strong>+8 points</strong>. They are a year ahead on the agentic-TPRM AEO angle Magnitude is launching into. Out-narrate them on technical depth: their roots are compliance automation, not multi-agent TPRM. Speed-to-market on Coinbase-style engineering content is the wedge.</div>
+        </div><div class="threat-card">
+          <div class="threat-header critical">
+            <span class="threat-severity critical">Critical</span>
+            <span class="threat-title">ServiceNow's traffic dwarfs the entire competitive set — by an order of magnitude</span>
+          </div>
+          <div class="threat-body">ServiceNow (DR 87, <strong>789,526/mo</strong> US organic) is the GRC incumbent. Vanta (62,147/mo) and Drata (35,897/mo) are 10× smaller; Bitsight/SecurityScorecard/BlueVoyant are 20× smaller; Magnitude starts at zero. Don't chase ServiceNow's scale — chase their narrative. Magnitude is the modern, fast, agentic alternative to GRC platform bloat. Speed is the moat: ServiceNow can't ship a new agentic feature in 6 weeks. Magnitude can.</div>
+        </div><div class="threat-card">
+          <div class="threat-header critical">
+            <span class="threat-severity critical">Critical</span>
+            <span class="threat-title">Editorial guides — not product pages — earn AI Overview citations</span>
+          </div>
+          <div class="threat-body">Every TPRM AIO citation in the snapshot is to an editorial guide. BlueVoyant's TPRM "Complete Guide" drives <strong>1,409 monthly visits</strong> from <strong>87 ranking keywords</strong> on a single page. Panorays' TPRM blog ranks #1 for <code>tprm</code> (3,700/mo) on DR 63. Bitsight's "Ultimate Guide" sits at #4 for the same query. Product pages don't earn AIO real estate. Magnitude needs a definitive 'Agentic TPRM' editorial hub live at launch — Coinbase-style technical depth, not a sales page. This is the asset that earns AIO citations, ranks for high-volume informational queries, and gives Forbes / TechCrunch journalists a substantive link target during the seed announcement.</div>
+        </div><div class="threat-card">
+          <div class="threat-header warning">
+            <span class="threat-severity warning">Warning</span>
+            <span class="threat-title">Drata is the agentic mover to watch</span>
+          </div>
+          <div class="threat-body">Drata (DR 80, 35,897/mo) is now ranking for <code>drata agent</code> as an emerging branded keyword. Their /learn/compare/ hub ranks #9 for <code>best third party risk management software</code>. 14-month refdomain growth: <strong>+170%</strong> — the fastest in the highlighted set. If Drata pivots to claim 'agentic' positioning, Magnitude's "first 100% multi-agent" claim narrows fast. Beat them to TPRM-specific depth while their center of gravity is still compliance automation. The agentic narrative is contestable for ~6–12 months before someone owns it.</div>
+        </div><div class="threat-card">
+          <div class="threat-header warning">
+            <span class="threat-severity warning">Warning</span>
+            <span class="threat-title">BlueVoyant's US traffic is in measurable decline (-44% in 14 months)</span>
+          </div>
+          <div class="threat-body">BlueVoyant's US organic traffic dropped from <strong>44,360/mo</strong> in Apr 2025 to <strong>24,681/mo</strong> in May 2026 — down <strong>-44%</strong>. Their editorial moat is eroding even though their TPRM guide remains AIO-cited. A tier-1 player losing ground signals where Magnitude can take share. Identify which BlueVoyant pages are losing rankings (likely older knowledge-center posts decaying without refresh) and build modern equivalents with agentic framing on the Magnitude hub.</div>
+        </div><div class="threat-card">
+          <div class="threat-header warning">
+            <span class="threat-severity warning">Warning</span>
+            <span class="threat-title">AIO citation gap: Magnitude has zero, competitors are stacking citations</span>
+          </div>
+          <div class="threat-body">The TPRM AIO citation count tilt: SecurityScorecard (cited 2× on "third party risk management"), BlueVoyant, Panorays, IBM, OneTrust, ServiceNow, and Bitsight all appear regularly in AI Overview sitelinks across the high-volume informational queries. Magnitude has zero AIO citations as of the May 2026 baseline. Closing this gap requires the editorial hub described above plus structured content (FAQs, definitions, comparison tables) optimized for LLM extraction. The greenfield queries (<code>agentic vendor risk management</code>, <code>ai vendor risk management</code>) are the fastest path to first citations.</div>
+        </div><div class="threat-card">
+          <div class="threat-header opportunity">
+            <span class="threat-severity opportunity">Opportunity</span>
+            <span class="threat-title">'Agentic vendor risk management' is greenfield — zero competition today</span>
+          </div>
+          <div class="threat-body">Ahrefs SERP overview returns <strong>zero data</strong> for <code>agentic vendor risk management</code> and <code>ai vendor risk management</code>. No competitor has indexed content for these category-defining queries. Magnitude can plant the flag and own the canonical citations before Vanta, Lema, Zania, or anyone else publishes. Two pages within 30 days of launch: "Agentic Vendor Risk Management — The Definitive Guide" and "AI Vendor Risk Management Explained." Long-form, technical, structured data, citations. These become the AI-cited sources as the category emerges.</div>
+        </div><div class="threat-card">
+          <div class="threat-header opportunity">
+            <span class="threat-severity opportunity">Opportunity</span>
+            <span class="threat-title">PR-led link building is the right starting move and it's already in motion</span>
+          </div>
+          <div class="threat-body">Magnitude pre-launch baseline: DR <strong>11</strong>, refdomains <strong>76</strong>, organic keywords <strong>0</strong>. The Forbes/TechCrunch/Axios pre-pitches Sean has initiated for the seed announcement are correct — high-DR editorial links compound faster than transactional ones. Each tier-1 placement materially closes the DR gap. Layer in customer reference logos (Block, Rogo AI) earning earned mentions, founder thought leadership in Dark Reading and SecurityWeek, and engineering blog cross-posts on Hacker News / Lobsters. Avoid sponsored placements that dilute the link profile.</div>
+        </div>
+    </section>
+
+    <div class="footer">
+      <strong>Digital Reach Agency</strong> · SEO &amp; AEO Program for Magnitude · Generated May 13, 2026 · Data via Ahrefs API
+    </div>
+
+  </div>
+</div>
+
+<script>
+const labels14 = ["Apr '25", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan '26", "Feb", "Mar", "Apr", "May"];
+const chartFont = { family: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif', size: 11 };
+
+const baseLineOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { position: 'bottom', labels: { font: chartFont, padding: 10, boxWidth: 14 } },
+    tooltip: { mode: 'index', intersect: false }
+  },
+  interaction: { mode: 'index', intersect: false },
+  scales: { y: { ticks: { font: chartFont } }, x: { ticks: { font: chartFont } } }
+};
+
+// Executive bar chart (KW vs Traffic)
+new Chart(document.getElementById('executiveBarChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"],
+    datasets: [
+      { label: 'Organic Keywords', data: [0, 3348, 26572, 2091, 1580, 3970], backgroundColor: '#1a56db', yAxisID: 'y' },
+      { label: 'Organic Traffic / mo', data: [0, 62147, 789526, 25562, 35897, 35585], backgroundColor: '#f59e0b', yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: chartFont } } },
+    scales: {
+      y: { type: 'logarithmic', position: 'left', title: { display: true, text: 'Keywords' }, ticks: { font: chartFont } },
+      y1: { type: 'logarithmic', position: 'right', title: { display: true, text: 'Traffic / mo' }, grid: { drawOnChartArea: false }, ticks: { font: chartFont } },
+      x: { ticks: { font: chartFont } }
+    }
+  }
+});
+
+// SoV stacked
+new Chart(document.getElementById('sovChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56dbCC", "fill": true, "tension": 0.3}, {"label": "Vanta", "data": [6.1, 6.4, 4.6, 2.9, 2.7, 3.9, 5.9, 6.4, 6.7, 5.1, 5.7, 5.7, 6.9, 6.6], "borderColor": "#f59e0b", "backgroundColor": "#f59e0bCC", "fill": true, "tension": 0.3}, {"label": "ServiceNow", "data": [79.4, 78.9, 83.8, 90.3, 90.5, 85.9, 79.2, 77.4, 76.6, 82.8, 83.8, 83.1, 80.2, 84.3], "borderColor": "#ef4444", "backgroundColor": "#ef4444CC", "fill": true, "tension": 0.3}, {"label": "BlueVoyant", "data": [5.7, 5.5, 3.9, 2.4, 2.5, 3.9, 5.8, 6.1, 5.9, 4.3, 3.3, 3.2, 3.2, 2.7], "borderColor": "#10b981", "backgroundColor": "#10b981CC", "fill": true, "tension": 0.3}, {"label": "Drata", "data": [4.2, 4.4, 3.7, 2.1, 2.0, 2.9, 4.6, 5.4, 5.7, 4.3, 4.2, 4.7, 5.2, 2.5], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf6CC", "fill": true, "tension": 0.3}, {"label": "Bitsight", "data": [4.6, 4.7, 4.0, 2.2, 2.3, 3.3, 4.5, 4.7, 5.0, 3.4, 3.1, 3.3, 4.5, 3.9], "borderColor": "#06b6d4", "backgroundColor": "#06b6d4CC", "fill": true, "tension": 0.3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { stacked: true, beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: chartFont } } } }
+});
+
+// Raw traffic (log)
+new Chart(document.getElementById('rawTrafficChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [47055, 48172, 43658, 45446, 42613, 48277, 47243, 44499, 44979, 50275, 61358, 57143, 57216, 60464], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "ServiceNow", "data": [617294, 592000, 794274, 1408278, 1438417, 1051688, 629202, 533880, 517241, 815478, 906622, 830604, 667682, 769065], "borderColor": "#ef4444", "backgroundColor": "#ef444420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "BlueVoyant", "data": [44360, 41598, 37335, 37819, 39699, 47424, 45829, 41914, 40141, 42478, 35398, 32121, 26388, 24681], "borderColor": "#10b981", "backgroundColor": "#10b98120", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [32710, 33103, 34581, 33094, 31360, 35903, 36389, 37021, 38800, 42839, 45080, 46923, 43551, 23232], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [35886, 35386, 37443, 34275, 36684, 40588, 36143, 32685, 33872, 33976, 33244, 33198, 37698, 35136], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
+});
+
+// Traffic value (log)
+new Chart(document.getElementById('trafficValueChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [462.8, 463.6, 441.1, 457.5, 433.8, 485.0, 477.0, 448.5, 438.0, 475.1, 538.9, 500.5, 511.7, 518.1], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "ServiceNow", "data": [2316.1, 2233.8, 3028.5, 5372.0, 5493.9, 3986.5, 2340.0, 1944.4, 1873.6, 3071.0, 3379.4, 3121.1, 2497.3, 2874.4], "borderColor": "#ef4444", "backgroundColor": "#ef444420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "BlueVoyant", "data": [228.9, 208.3, 190.6, 189.5, 191.4, 225.3, 212.9, 187.7, 178.3, 181.5, 161.9, 140.3, 118.0, 109.6], "borderColor": "#10b981", "backgroundColor": "#10b98120", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [458.3, 465.6, 502.6, 511.0, 484.2, 525.1, 535.2, 537.1, 543.8, 589.0, 596.5, 608.1, 650.5, 325.7], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [154.7, 158.0, 156.6, 138.0, 142.7, 167.3, 158.9, 140.6, 134.1, 140.8, 145.8, 147.1, 164.2, 155.4], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic', ticks: { callback: v => '$' + v + 'K', font: chartFont } } } }
+});
+
+// DR history
+new Chart(document.getElementById('drChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.6, 0.6, 0.6, 1.3, 1.5, 1.7, 1.6, 1.6, 1.6, 1.5, 1.5, 1.5, 4.8, 11], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [78, 79, 80, 80, 80, 81, 83, 84, 84, 85, 85, 85, 86, 86], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "ServiceNow", "data": [85, 85, 85, 85, 85, 85, 86, 86, 86, 86, 86, 87, 87, 87], "borderColor": "#ef4444", "backgroundColor": "#ef444420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "BlueVoyant", "data": [69, 69, 70, 69, 70, 70, 71, 71, 71, 72, 72, 71, 71, 71], "borderColor": "#10b981", "backgroundColor": "#10b98120", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [76, 77, 77, 77, 77, 77, 80, 80, 80, 80, 80, 80, 80, 80], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [75, 75, 75, 75, 75, 76, 75, 75, 75, 75, 76, 76, 76, 76], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { beginAtZero: true, max: 100, ticks: { font: chartFont } } } }
+});
+
+// Refdomains
+new Chart(document.getElementById('refdChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [14, 13, 12, 17, 20, 22, 22, 21, 25, 32, 32, 22, 43, 76], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [4209, 4407, 4749, 4902, 5371, 6076, 6633, 6967, 7751, 8478, 8518, 9491, 9789, 10501], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "ServiceNow", "data": [20995, 21185, 21013, 21230, 21981, 23043, 24312, 24469, 26353, 27241, 27771, 28490, 28196, 29790], "borderColor": "#ef4444", "backgroundColor": "#ef444420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "BlueVoyant", "data": [1903, 1906, 1891, 1893, 1893, 1963, 2240, 2205, 2351, 2379, 2325, 2176, 2158, 2282], "borderColor": "#10b981", "backgroundColor": "#10b98120", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [2862, 2900, 2929, 2952, 3038, 3189, 3448, 3477, 3648, 4351, 4510, 6539, 7211, 7735], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [3689, 3990, 4217, 4558, 5081, 5631, 6184, 6125, 6819, 7506, 7621, 8084, 7709, 8208], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
+});
+
+// Traffic trends (large)
+new Chart(document.getElementById('trafficTrendsChart'), {
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [47055, 48172, 43658, 45446, 42613, 48277, 47243, 44499, 44979, 50275, 61358, 57143, 57216, 60464], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "ServiceNow", "data": [617294, 592000, 794274, 1408278, 1438417, 1051688, 629202, 533880, 517241, 815478, 906622, 830604, 667682, 769065], "borderColor": "#ef4444", "backgroundColor": "#ef444420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "BlueVoyant", "data": [44360, 41598, 37335, 37819, 39699, 47424, 45829, 41914, 40141, 42478, 35398, 32121, 26388, 24681], "borderColor": "#10b981", "backgroundColor": "#10b98120", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [32710, 33103, 34581, 33094, 31360, 35903, 36389, 37021, 38800, 42839, 45080, 46923, 43551, 23232], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [35886, 35386, 37443, 34275, 36684, 40588, 36143, 32685, 33872, 33976, 33244, 33198, 37698, 35136], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
+});
+
+// Country chart
+new Chart(document.getElementById('countryChart'), {
+  type: 'bar',
+  data: { labels: ["India (IN)", "United States (US)", "United Kingdom (GB)", "Pakistan (PK)", "Canada (CA)", "Brazil (BR)", "Australia (AU)", "Netherlands (NL)", "Spain (ES)", "Portugal (PT)"], datasets: [{ label: 'Monthly Organic Traffic', data: [68573, 62147, 6740, 6579, 3399, 2944, 2294, 2233, 1723, 1568], backgroundColor: '#1a56db' }] },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, ticks: { font: chartFont } }, y: { ticks: { font: chartFont } } } }
+});
+
+// Competitive metrics bar charts
+const barOpts = (log=false, ytickFmt=null) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    y: { beginAtZero: !log, type: log ? 'logarithmic' : 'linear', ticks: { font: chartFont, callback: ytickFmt } },
+    x: { ticks: { font: chartFont, autoSkip: false, maxRotation: 30, minRotation: 30 } }
+  }
+});
+new Chart(document.getElementById('barDR'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [11, 86, 87, 71, 80, 76], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts() });
+new Chart(document.getElementById('barRefd'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [76, 10501, 29790, 2282, 7735, 8208], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts() });
+new Chart(document.getElementById('barBacklinks'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [196, 1554971, 1727305, 29461, 1429036, 1853324], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts(true) });
+new Chart(document.getElementById('barTraffic'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [0, 62147, 789526, 25562, 35897, 35585], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts(true) });
+new Chart(document.getElementById('barKW'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [0, 3348, 26572, 2091, 1580, 3970], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts() });
+new Chart(document.getElementById('barValue'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "ServiceNow", "BlueVoyant", "Drata", "Bitsight"], datasets:[{data: [0, 531, 2966, 114, 568, 154], backgroundColor: ["#1a56db", "#f59e0b", "#ef4444", "#10b981", "#8b5cf6", "#06b6d4"]}]}, options: barOpts(true, v => '$' + v + 'K') });
+
+// Section nav
+function switchSection(sectionId, navEl) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// Tab switching for top pages
+document.querySelectorAll('.tab-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('.tab-button').forEach(b => {
+      b.classList.remove('active');
+      const color = b.style.borderColor;
+      b.style.background = 'white';
+      b.style.color = color;
+    });
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const color = btn.style.borderColor;
+    btn.style.background = color;
+    btn.style.color = '#fff';
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+// Download to PDF
+function downloadPDF() {
+  const btn = document.getElementById('downloadBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg> Generating...';
+  document.body.classList.add('pdf-rendering');
+  const opt = {
+    margin: 10,
+    filename: 'magnitude-competitive-intel-May-13-2026.pdf',
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { scale: 1.5, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+  html2pdf().set(opt).from(document.querySelector('.main-content')).save().then(() => {
+    document.body.classList.remove('pdf-rendering');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF';
+  }).catch(err => {
+    console.error(err);
+    document.body.classList.remove('pdf-rendering');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg> Error — try again';
+  });
+}
+</script>
+</body>
+</html>
