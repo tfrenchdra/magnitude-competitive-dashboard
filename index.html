@@ -73,6 +73,12 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
 .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
 .tab-button { padding: 8px 20px; border: 1px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; color: #6b7280; transition: all 0.2s; font-weight: 600; }
 .tab-button.active { color: white; }
+.llm-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; padding-bottom: 0; }
+.llm-tab-btn { padding: 12px 20px; border: none; background: transparent; cursor: pointer; font-size: 14px; color: #6b7280; font-weight: 600; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.llm-tab-btn:hover { color: #1a56db; background: #f9fafb; }
+.llm-tab-btn.active { color: #1a56db; border-bottom-color: #1a56db; background: #eff6ff; }
+.llm-panes-container { min-height: 400px; }
+.llm-pane.active { display: block; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 .threat-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 16px; overflow: hidden; }
@@ -117,6 +123,7 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
       <li><a class="nav-link" onclick="switchSection('backlinks', this)">Backlinks</a></li>
       <li><a class="nav-link" onclick="switchSection('keyword-gap', this)">Keyword Gap Analysis</a></li>
       <li><a class="nav-link" onclick="switchSection('aio-performance', this)">AI Overview Performance</a></li>
+      <li><a class="nav-link" onclick="switchSection('ai-perception', this)">AI Brand Perception (ChatGPT)</a></li>
       <li><a class="nav-link" onclick="switchSection('threats', this)">Strategic Threats &amp; Insights</a></li>
     </ul>
   </nav>
@@ -125,18 +132,11 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
 
     <div class="header">
       <h1>Magnitude — Competitive Intelligence Dashboard</h1>
-      <p>Early post-launch SEO/AEO snapshot · magnitude.ai vs the TPRM competitive set · July 8, 2026 · US (with worldwide context where noted) · 14-month window: Jun 2025 – Jul 2026</p>
+      <p>Early post-launch SEO/AEO snapshot · magnitude.ai vs the TPRM competitive set · August 12, 2026 · US (with worldwide context where noted) · 14-month window: Jul 2025 – Aug 2026</p>
       <button id="downloadBtn" class="download-btn" onclick="downloadPDF()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Download PDF
       </button>
-    </div>
-
-    <div class="info-card">
-      <div class="info-icon">i</div>
-      <div class="info-card-text">
-        <strong>AEO data note:</strong> Ahrefs Brand Radar (per-LLM citation tracking across ChatGPT, Perplexity, Gemini, Copilot, Grok) requires a paid add-on not enabled on the current subscription. AI Overview Performance section uses SERP-level AIO citation data as the closest available proxy. Recommend enabling Brand Radar before the June launch to baseline LLM citations from day one.
-      </div>
     </div>
 
     <!-- 1. EXECUTIVE SUMMARY -->
@@ -144,7 +144,7 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
       <h2 class="section-title">Executive Summary</h2>
       <p class="section-desc">Snapshot of Magnitude (magnitude.ai) early post-launch baseline against the focused TPRM competitive set. Direct rivals (Vanta, Drata, Lema, Whistic, Safe Security), the ratings adjacencies (Bitsight, SecurityScorecard, Black Kite), and TPRM-specific editorial leader Panorays. All numbers are US-market unless otherwise noted. Magnitude starts at zero on organic metrics — the dashboard quantifies the climb ahead.</p>
 
-      <div class="kpi-grid"><div class="kpi-card "><div class="kpi-label">Organic Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Organic Traffic / mo</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Traffic Value</div><div class="kpi-value">$0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Top-3 Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Domain Rating</div><div class="kpi-value">7</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Live Backlinks</div><div class="kpi-value">458</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Referring Domains</div><div class="kpi-value">317</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">WW Organic KW</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div></div>
+      <div class="kpi-grid"><div class="kpi-card "><div class="kpi-label">Organic Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Organic Traffic / mo</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Traffic Value</div><div class="kpi-value">$0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Top-3 Keywords</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Domain Rating</div><div class="kpi-value">12</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Live Backlinks</div><div class="kpi-value">831</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">Referring Domains</div><div class="kpi-value">515</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card "><div class="kpi-label">WW Organic KW</div><div class="kpi-value">0</div><div class="kpi-domain">magnitude.ai</div></div></div>
 
       <div class="chart-container">
         <div class="chart-title">Head-to-Head Comparison — Magnitude + 7 Highlighted Competitors</div>
@@ -157,69 +157,69 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
           <td>0</td>
           <td>$0</td>
           <td>0</td>
-          <td>7</td>
-          <td>458</td>
-          <td>317</td>
+          <td>12</td>
+          <td>831</td>
+          <td>515</td>
           <td>0</td>
         </tr><tr>
           <td><strong style="color:#f59e0b;">Vanta</strong></td>
-          <td>3,655</td>
-          <td>69,891</td>
-          <td>$564.0K</td>
-          <td>1,845</td>
-          <td>86</td>
-          <td>1,777,557</td>
-          <td>11,395</td>
+          <td>3,399</td>
+          <td>74,190</td>
+          <td>$599.0K</td>
+          <td>1,666</td>
+          <td>87</td>
+          <td>2,144,722</td>
+          <td>11,667</td>
           <td>123,735</td>
         </tr><tr>
           <td><strong style="color:#8b5cf6;">Drata</strong></td>
-          <td>2,809</td>
-          <td>42,463</td>
-          <td>$620.3K</td>
-          <td>1,298</td>
+          <td>2,602</td>
+          <td>47,699</td>
+          <td>$547.6K</td>
+          <td>1,174</td>
           <td>80</td>
-          <td>1,492,743</td>
-          <td>8,808</td>
+          <td>1,486,896</td>
+          <td>8,939</td>
           <td>54,594</td>
         </tr><tr>
           <td><strong style="color:#06b6d4;">Bitsight</strong></td>
-          <td>4,723</td>
-          <td>47,555</td>
-          <td>$166.0K</td>
-          <td>2,288</td>
-          <td>77</td>
-          <td>1,867,060</td>
-          <td>8,561</td>
+          <td>4,345</td>
+          <td>37,679</td>
+          <td>$178.8K</td>
+          <td>2,058</td>
+          <td>76</td>
+          <td>2,170,533</td>
+          <td>8,677</td>
           <td>87,648</td>
         </tr><tr>
           <td><strong style="color:#14b8a6;">Safe Security</strong></td>
-          <td>2,669</td>
-          <td>30,299</td>
-          <td>$101.8K</td>
-          <td>1,020</td>
-          <td>72</td>
-          <td>16,211</td>
-          <td>2,799</td>
+          <td>2,640</td>
+          <td>21,895</td>
+          <td>$108.1K</td>
+          <td>1,114</td>
+          <td>71</td>
+          <td>16,496</td>
+          <td>2,896</td>
           <td>89,548</td>
         </tr><tr>
           <td><strong style="color:#ec4899;">Lema AI</strong></td>
-          <td>9</td>
           <td>12</td>
-          <td>$212</td>
-          <td>3</td>
-          <td>32</td>
-          <td>394</td>
-          <td>145</td>
+          <td>13</td>
+          <td>$141</td>
+          <td>5</td>
+          <td>33</td>
+          <td>452</td>
+          <td>163</td>
           <td>13</td>
         </tr><tr>
           <td><strong style="color:#84cc16;">Whistic</strong></td>
-          <td>74</td>
-          <td>2,438</td>
-          <td>$4.5K</td>
-          <td>23</td>
-          <td>72</td>
-          <td>9,805</td>
-          <td>965</td>
+          <td>65</td>
+          <td>3,062</td>
+          <td>$7.6K</td>
+          <td>19</td>
+          <td>71</td>
+          <td>10,204</td>
+          <td>1,030</td>
           <td>2,823</td>
         </tr><tr>
           <td><strong style="color:#f97316;">Zania</strong></td>
@@ -249,102 +249,102 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
           <tbody><tr>
           <td><strong style="color:#1a56db;">Magnitude</strong><br><span style="color:#9ca3af;font-size:11px;">magnitude.ai</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Baseline (Magnitude)</span></td>
-          <td>7</td>
+          <td>12</td>
           <td>0</td>
           <td>0</td>
           <td>0</td>
           <td>$0</td>
           <td>0</td>
-          <td>458</td>
-          <td>317</td>
+          <td>831</td>
+          <td>515</td>
         </tr><tr>
           <td><strong style="color:#f59e0b;">Vanta</strong><br><span style="color:#9ca3af;font-size:11px;">vanta.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC</span></td>
-          <td>86</td>
-          <td>3,655</td>
-          <td>1,845</td>
-          <td>69,891</td>
-          <td>$564.0K</td>
+          <td>87</td>
+          <td>3,399</td>
+          <td>1,666</td>
+          <td>74,190</td>
+          <td>$599.0K</td>
           <td>123,735</td>
-          <td>1,777,557</td>
-          <td>11,395</td>
+          <td>2,144,722</td>
+          <td>11,667</td>
         </tr><tr>
           <td><strong style="color:#374151;">Panorays</strong><br><span style="color:#9ca3af;font-size:11px;">panorays.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC (TPRM-specific)</span></td>
           <td>63</td>
-          <td>1,526</td>
-          <td>559</td>
-          <td>9,486</td>
-          <td>$37.8K</td>
+          <td>1,454</td>
+          <td>548</td>
+          <td>9,318</td>
+          <td>$42.9K</td>
           <td>15,315</td>
           <td>7,810</td>
           <td>1,988</td>
         </tr><tr>
           <td><strong style="color:#06b6d4;">Bitsight</strong><br><span style="color:#9ca3af;font-size:11px;">bitsight.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
-          <td>77</td>
-          <td>4,723</td>
-          <td>2,288</td>
-          <td>47,555</td>
-          <td>$166.0K</td>
+          <td>76</td>
+          <td>4,345</td>
+          <td>2,058</td>
+          <td>37,679</td>
+          <td>$178.8K</td>
           <td>87,648</td>
-          <td>1,867,060</td>
-          <td>8,561</td>
+          <td>2,170,533</td>
+          <td>8,677</td>
         </tr><tr>
           <td><strong style="color:#374151;">SecurityScorecard</strong><br><span style="color:#9ca3af;font-size:11px;">securityscorecard.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
           <td>78</td>
-          <td>5,047</td>
-          <td>2,415</td>
-          <td>40,284</td>
-          <td>$94.5K</td>
+          <td>4,694</td>
+          <td>2,094</td>
+          <td>40,107</td>
+          <td>$162.4K</td>
           <td>72,618</td>
           <td>17,992,820</td>
           <td>11,591</td>
         </tr><tr>
           <td><strong style="color:#14b8a6;">Safe Security</strong><br><span style="color:#9ca3af;font-size:11px;">safe.security</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
-          <td>72</td>
-          <td>2,669</td>
-          <td>1,020</td>
-          <td>30,299</td>
-          <td>$101.8K</td>
+          <td>71</td>
+          <td>2,640</td>
+          <td>1,114</td>
+          <td>21,895</td>
+          <td>$108.1K</td>
           <td>89,548</td>
-          <td>16,211</td>
-          <td>2,799</td>
+          <td>16,496</td>
+          <td>2,896</td>
         </tr><tr>
           <td><strong style="color:#ec4899;">Lema AI</strong><br><span style="color:#9ca3af;font-size:11px;">lema.ai</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
-          <td>32</td>
-          <td>9</td>
-          <td>3</td>
+          <td>33</td>
           <td>12</td>
-          <td>$212</td>
+          <td>5</td>
           <td>13</td>
-          <td>394</td>
-          <td>145</td>
+          <td>$141</td>
+          <td>13</td>
+          <td>452</td>
+          <td>163</td>
         </tr><tr>
           <td><strong style="color:#84cc16;">Whistic</strong><br><span style="color:#9ca3af;font-size:11px;">whistic.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
-          <td>72</td>
-          <td>74</td>
-          <td>23</td>
-          <td>2,438</td>
-          <td>$4.5K</td>
+          <td>71</td>
+          <td>65</td>
+          <td>19</td>
+          <td>3,062</td>
+          <td>$7.6K</td>
           <td>2,823</td>
-          <td>9,805</td>
-          <td>965</td>
+          <td>10,204</td>
+          <td>1,030</td>
         </tr><tr>
           <td><strong style="color:#8b5cf6;">Drata</strong><br><span style="color:#9ca3af;font-size:11px;">drata.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Compliance/GRC</span></td>
           <td>80</td>
-          <td>2,809</td>
-          <td>1,298</td>
-          <td>42,463</td>
-          <td>$620.3K</td>
+          <td>2,602</td>
+          <td>1,174</td>
+          <td>47,699</td>
+          <td>$547.6K</td>
           <td>54,594</td>
-          <td>1,492,743</td>
-          <td>8,808</td>
+          <td>1,486,896</td>
+          <td>8,939</td>
         </tr><tr>
           <td><strong style="color:#f97316;">Zania</strong><br><span style="color:#9ca3af;font-size:11px;">zania.ai</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
@@ -360,10 +360,10 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
           <td><strong style="color:#374151;">Coverbase</strong><br><span style="color:#9ca3af;font-size:11px;">coverbase.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Direct</span></td>
           <td>32</td>
-          <td>3</td>
+          <td>2</td>
           <td>1</td>
-          <td>139</td>
-          <td>$552</td>
+          <td>154</td>
+          <td>$610</td>
           <td>147</td>
           <td>7,830</td>
           <td>416</td>
@@ -371,10 +371,10 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
           <td><strong style="color:#374151;">Black Kite</strong><br><span style="color:#9ca3af;font-size:11px;">blackkite.com</span></td>
           <td><span style="background:#f3f4f6;padding:2px 8px;border-radius:10px;font-size:11px;color:#374151;">Ratings</span></td>
           <td>64</td>
-          <td>96</td>
-          <td>37</td>
-          <td>1,537</td>
-          <td>$2.5K</td>
+          <td>105</td>
+          <td>44</td>
+          <td>1,799</td>
+          <td>$3.2K</td>
           <td>1,974</td>
           <td>9,054</td>
           <td>1,524</td>
@@ -470,7 +470,7 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
     <!-- 3. AUTHORITY TRENDS -->
     <section id="authority-trends" class="section">
       <h2 class="section-title">Authority Trends</h2>
-      <p class="section-desc">14-month Domain Rating and referring-domain growth across the highlighted set. Magnitude's DR jumped from 1.5 to 7 in the last two months — the pre-launch buildup landing as Sean's press and link-acquisition work compounds.</p>
+      <p class="section-desc">14-month Domain Rating and referring-domain growth across the highlighted set. Magnitude's DR jumped from 1.5 to 12 in the last two months — the pre-launch buildup landing as Sean's press and link-acquisition work compounds.</p>
 
       <div class="charts-row">
         <div class="chart-container">
@@ -839,7 +839,7 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
       <p class="section-desc">Live backlinks pointing to <strong>magnitude.ai</strong> via Ahrefs. The launch announcement landed real, high-DR earned coverage (Fortune, TheCyberWire) — but the dataset is also dominated by an active spam backlink campaign that needs disavow attention. Per the project brief: "Backlink disavow for the spam backlink cluster identified pre-launch" — this section shows that cluster.</p>
 
       <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-label">Live Backlinks</div><div class="kpi-value">458</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card"><div class="kpi-label">Referring Domains</div><div class="kpi-value">317</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card"><div class="kpi-label">Top-30 Domains Flagged Spam</div><div class="kpi-value">26 / 30</div><div class="kpi-domain">87% spam</div></div><div class="kpi-card"><div class="kpi-label">Top-30 Legit Earned Refs</div><div class="kpi-value">4 / 30</div><div class="kpi-domain">Fortune, CyberWire, etc.</div></div>
+        <div class="kpi-card"><div class="kpi-label">Live Backlinks</div><div class="kpi-value">831</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card"><div class="kpi-label">Referring Domains</div><div class="kpi-value">515</div><div class="kpi-domain">magnitude.ai</div></div><div class="kpi-card"><div class="kpi-label">Top-30 Domains Flagged Spam</div><div class="kpi-value">26 / 30</div><div class="kpi-domain">87% spam</div></div><div class="kpi-card"><div class="kpi-label">Top-30 Legit Earned Refs</div><div class="kpi-value">4 / 30</div><div class="kpi-domain">Fortune, CyberWire, etc.</div></div>
       </div>
 
       <div class="chart-container">
@@ -1393,7 +1393,1200 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
       </div>
     </section>
 
-    <!-- 10. STRATEGIC THREATS -->
+    <!-- 10. AI BRAND PERCEPTION (SEMrush · multi-LLM) -->
+    <section id="ai-perception" class="section">
+      <h2 class="section-title">AI Brand Perception — SEMrush AI Visibility</h2>
+      <p class="section-desc">How the four major AI answer engines talk about Magnitude vs the TPRM competitive set. Comparison universe: Magnitude, Bitsight, Upguard, Onetrust, Securityscorecard, Vanta, Drata (US · English). Magnitude sits at 0% Share of Voice across every LLM — but is the acknowledged leader of the "Autonomous TPRM Agents" business driver in all four. Click a tab to switch lenses.</p>
+
+      <div class="llm-tabs"><button class="llm-tab-btn active" data-llm="chatgpt" onclick="switchLLM('chatgpt', this)">ChatGPT</button><button class="llm-tab-btn" data-llm="perplexity" onclick="switchLLM('perplexity', this)">Perplexity</button><button class="llm-tab-btn" data-llm="gemini" onclick="switchLLM('gemini', this)">Gemini</button><button class="llm-tab-btn" data-llm="google_ai_mode" onclick="switchLLM('google_ai_mode', this)">Google AI Mode</button></div>
+
+      <div class="llm-panes-container"><div class="llm-pane active" data-llm="chatgpt" style="display:block;">
+      
+      <div style="font-size:14px;color:#374151;margin-bottom:16px;"><strong>Lens:</strong> ChatGPT <span style='color:#6b7280;font-weight:400;font-size:12px;'>· as of 2026-08-04</span></div>
+
+      <div class="insight-grid"><div class="insight-box">
+          <h4>Turn Innovation Into Trust</h4>
+          <p>Lift 50% positivity toward 70–90% peers via governance-rich, explainable AI proof.</p>
+        </div><div class="insight-box">
+          <h4>Scale A High-Quality Beachhead</h4>
+          <p>Grow from 0.33% SoV by targeting questions where Bitsight, ServiceNow dominate.</p>
+        </div><div class="insight-box">
+          <h4>From Add-On To Anchor</h4>
+          <p>Challenge 'supplement' status vs ServiceNow, Archer, ProcessUnity by publicizing multi-year system-of-record deployments.</p>
+        </div><div class="insight-box">
+          <h4>Expand Beyond Autonomous Niche</h4>
+          <p>Add content for audit-ready reporting, evidence integration, dashboards — incumbents outnumber Magnitude 5–10x.</p>
+        </div></div>
+
+      <div class="chart-container">
+        <div class="chart-title">Share of Voice — ChatGPT</div>
+        <div class="chart-desc">Percent of ChatGPT responses about TPRM that mention each brand.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Share</th><th style="text-align:right;">%</th><th style="text-align:center;">Trend</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">11%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:90.9090909090909%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">10%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:54.54545454545454%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">6%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:45.45454545454545%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">5%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:18.181818181818183%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">2%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:9.090909090909092%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">1%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span> <span style='color:#6b7280;font-size:11px;'>(2 mentions)</span></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#1a56db;height:100%;width:0.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">0.33%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Other</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#9ca3af;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">64%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Favorable Sentiment — ChatGPT</div>
+        <div class="chart-desc">Percent of mentions ChatGPT frames favorably.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Favorable Sentiment</th><th style="text-align:right;">%</th><th style="text-align:center;">Δ</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:88%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">88%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+8</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:87%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">87%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+6</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:86%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">86%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+13</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:85%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">85%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+22</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:80%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">80%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+5</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#f59e0b;height:100%;width:70%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">70%</td>
+          <td style="text-align:center;"></td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span><div style="color:#6b7280;font-size:11px;margin-top:2px;">50% favorable / 50% general — no negatives</div></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#1a56db;height:100%;width:50%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">50%</td>
+          <td style="text-align:center;"></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Business Drivers — ChatGPT</div>
+        <div class="chart-desc">The buying drivers ChatGPT associates with TPRM tool recommendations, ranked by total mentions. "LEADS" flag means Magnitude is the top-mentioned brand in that category.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Business Driver</th><th style="text-align:right;">Total Mentions</th><th>Category Leader</th><th style="text-align:right;">Magnitude</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;">Continuous Cyber Risk Monitoring</td>
+          <td style="text-align:right;">231</td>
+          <td>Bitsight (52)</td>
+          <td style="text-align:right;"><strong style="color:#10b981;">2</strong></td>
+        </tr><tr>
+          <td style="font-weight:500;">Threat-Intelligence-Led Vendor Monitoring</td>
+          <td style="text-align:right;">95</td>
+          <td>Bitsight (29)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI Evidence & Questionnaire Automation</td>
+          <td style="text-align:right;">93</td>
+          <td>Upguard (9)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI-Backed Audit-Ready Reporting</td>
+          <td style="text-align:right;">79</td>
+          <td>Upguard/Onetrust/Securityscorecard/Vanta (6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Integrated Internal & External Evidence</td>
+          <td style="text-align:right;">66</td>
+          <td>Onetrust (9)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Executive Risk Dashboards & Prioritization</td>
+          <td style="text-align:right;">48</td>
+          <td>Bitsight (7)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Automated Vendor Discovery & Inventory</td>
+          <td style="text-align:right;">44</td>
+          <td>Bitsight (5)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Supply Chain & Nth-Party Mapping</td>
+          <td style="text-align:right;">39</td>
+          <td>Bitsight (9)</td>
+          <td style="text-align:right;"><strong style="color:#10b981;">2</strong></td>
+        </tr><tr>
+          <td style="font-weight:500;">Dynamic Reassessment & Risk Tiering</td>
+          <td style="text-align:right;">39</td>
+          <td>Onetrust (4)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Explainable AI Risk Scoring</td>
+          <td style="text-align:right;">27</td>
+          <td>Bitsight/Onetrust/Vanta (2)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Customer Trust Centers & Self-Service Evidence</td>
+          <td style="text-align:right;">16</td>
+          <td>Vanta (2)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Autonomous TPRM Agents</td>
+          <td style="text-align:right;">13</td>
+          <td>MAGNITUDE (2)</td>
+          <td style="text-align:right;"><strong style="color:#1a56db;">2</strong> <span style="background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;">LEADS</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI Contract & Clause Intelligence</td>
+          <td style="text-align:right;">3</td>
+          <td>unnamed</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Strategic Opportunities — ChatGPT</div>
+        <div class="chart-desc">LLM-extracted opportunities pulled from ChatGPT's actual language about Magnitude vs the competitive set. Urgent items are underlined red; medium timeframe is amber.</div>
+        <div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Structural gap between technical differentiation and commercial visibility</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude owns 'Autonomous TPRM Agents' but sits at 0.33% SoV with 2 mentions vs 50–70+ for Bitsight, ServiceNow, OneTrust. ChatGPT knows the story but doesn't see it often enough.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Shift GTM from depth-only to depth-plus-reach.</li><li style='margin-bottom:6px;'>Seed third-party content in 'continuous vendor monitoring,' 'regulated industries,' 'Fortune 500 VRM,' 'best TPRM tools' naming Magnitude alongside incumbents.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Business-value narrative is too AI-mechanics-focused</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude under-indexes on Audit-Ready Reporting, Integrated Evidence, Executive Dashboards. ChatGPT explains Magnitude as 'autonomous workforce' but rarely links to CFO/board KPIs.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Reorient every technical capability to ladder to a business driver: audit cycles, remediations, critical-vendor coverage, manual hours, executive dashboards.</li><li style='margin-bottom:6px;'>Develop canonical 'business outcome' stories present across site, analyst notes, customer interviews.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Own the AI-forward complex-supply-chain ICP</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude is seen as overkill for small portfolios but compelling for orgs with large vendor counts, complex Nth-party exposure, AI-heavy stacks.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Double down on the mythos-era ICP: product, references, messaging, partnerships.</li><li style='margin-bottom:6px;'>Build verticalized deep stories (fintech, global SaaS, critical infrastructure).</li><li style='margin-bottom:6px;'>Get customers to speak as category exemplars.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Recognized as next-gen leader but not yet a safe default for large US enterprises</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">ChatGPT places Magnitude at the top of 'Autonomous TPRM Agents' but frames ServiceNow, OneTrust, Archer, ProcessUnity, Prevalent as 'safer' platforms of record. Magnitude described as accelerator or adjunct.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Recast from 'futuristic alternative' to 'enterprise-ready core plus AI advantage.'</li><li style='margin-bottom:6px;'>Publish reference architectures with Magnitude as central TPRM in 2+ large regulated customers.</li><li style='margin-bottom:6px;'>Format for ChatGPT ingestion: framework mappings, architecture diagrams, third-party commentary.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">AI trust/governance is the biggest brake on adoption — not feature gaps</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Negative drivers revolve around trust in autonomous AI decisions, regulatory acceptability, limited independent validation. ChatGPT advises keeping humans in the loop, validating via POCs.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Treat AI trust and governance as first-class products, not footnotes.</li><li style='margin-bottom:6px;'>Publish transparent 'AI governance and assurance' framework: guardrails, oversight, override workflows, auditability.</li><li style='margin-bottom:6px;'>Seek third-party validation (Big-4 reviews, NIST assessments, red-team reports); make artifacts public.</li></ul>
+        </div>
+      </div>
+    </div><div class="llm-pane" data-llm="perplexity" style="display:none;">
+      
+      <div style="font-size:14px;color:#374151;margin-bottom:16px;"><strong>Lens:</strong> Perplexity <span style='color:#6b7280;font-weight:400;font-size:12px;'>· as of 2026-08-04</span></div>
+
+      <div class="insight-grid"><div class="insight-box">
+          <h4>UX Proof Of Automation</h4>
+          <p>Attack 4/5 UX complaints by eliminating top 3 frictions; quantify backlog reduction and manual steps removed.</p>
+        </div><div class="insight-box">
+          <h4>Invade The Shortlists</h4>
+          <p>Target top 'best TPRM' roundups powering 60%+ of Perplexity recommendations where Magnitude is absent.</p>
+        </div><div class="insight-box">
+          <h4>Implementation Risk Reversal</h4>
+          <p>Counter 5/5 integration-complexity concern with published 6–8 week 'off spreadsheets' playbooks.</p>
+        </div><div class="insight-box">
+          <h4>Zero SoV Burning Platform</h4>
+          <p>Magnitude's 0% Share of Voice vs OneTrust's 12% demands immediate Perplexity-focused awareness push.</p>
+        </div></div>
+
+      <div class="chart-container">
+        <div class="chart-title">Share of Voice — Perplexity</div>
+        <div class="chart-desc">Percent of Perplexity responses about TPRM that mention each brand.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Share</th><th style="text-align:right;">%</th><th style="text-align:center;">Trend</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">12%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:83.33333333333334%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">10%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:66.66666666666666%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">8%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:58.333333333333336%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">7%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:41.66666666666667%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">5%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:16.666666666666664%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">2%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#1a56db;height:100%;width:0.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">0%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Other</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#9ca3af;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">54%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Favorable Sentiment — Perplexity</div>
+        <div class="chart-desc">Percent of mentions Perplexity frames favorably.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Favorable Sentiment</th><th style="text-align:right;">%</th><th style="text-align:center;">Δ</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">100%</td>
+          <td style="text-align:center;"></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:94%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">94%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+8</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:92%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">92%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+15</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:91%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">91%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-9</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:89%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">89%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-2</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:87%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">87%</td>
+          <td style="text-align:center;"></td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span><div style="color:#6b7280;font-size:11px;margin-top:2px;">Perplexity registers no direct brand mentions of Magnitude yet — sentiment data appears once mentions accrue</div></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">n/a</td>
+          <td style="text-align:center;"></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Business Drivers — Perplexity</div>
+        <div class="chart-desc">The buying drivers Perplexity associates with TPRM tool recommendations, ranked by total mentions. "LEADS" flag means Magnitude is the top-mentioned brand in that category.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Business Driver</th><th style="text-align:right;">Total Mentions</th><th>Category Leader</th><th style="text-align:right;">Magnitude</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;">Continuous Vendor Monitoring & Alerts</td>
+          <td style="text-align:right;">65</td>
+          <td>Bitsight (14)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Integrated VRM & GRC Lifecycle Management</td>
+          <td style="text-align:right;">55</td>
+          <td>Onetrust (6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Audit-Ready Evidence & Compliance Reporting</td>
+          <td style="text-align:right;">46</td>
+          <td>Onetrust (8)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Explainable Risk Scoring & Transparency</td>
+          <td style="text-align:right;">33</td>
+          <td>Securityscorecard (6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI Questionnaire & Evidence Automation</td>
+          <td style="text-align:right;">30</td>
+          <td>Onetrust (7)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Executive Risk Narratives & Dashboards</td>
+          <td style="text-align:right;">17</td>
+          <td>Bitsight (3)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Autonomous AI Agent Workflows</td>
+          <td style="text-align:right;">15</td>
+          <td>MAGNITUDE (per LLM narrative)</td>
+          <td style="text-align:right;"><strong style="color:#1a56db;">2</strong> <span style="background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;">LEADS</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">High-Scale AI-First Vendor Coverage</td>
+          <td style="text-align:right;">15</td>
+          <td>Securityscorecard (3)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Dynamic Risk Tiering & Remediation Prioritization</td>
+          <td style="text-align:right;">12</td>
+          <td>unnamed</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Contract & Clause Intelligence Automation</td>
+          <td style="text-align:right;">3</td>
+          <td>Onetrust (1)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Data Flow & Cross-Border Mapping Governance</td>
+          <td style="text-align:right;">2</td>
+          <td>Bitsight (1)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Threat Intel & Dark Web-Enhanced Monitoring</td>
+          <td style="text-align:right;">1</td>
+          <td>Upguard (1)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Strategic Opportunities — Perplexity</div>
+        <div class="chart-desc">LLM-extracted opportunities pulled from Perplexity's actual language about Magnitude vs the competitive set. Urgent items are underlined red; medium timeframe is amber.</div>
+        <div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Business-driver coverage is broader than perception reflects — reframe as end-to-end platform</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude appears across Continuous Monitoring, Evidence Automation, Audit-Ready Reporting, Integrated Lifecycle, Explainable Scoring, Data Flow Governance — but Perplexity reduces Magnitude to 'autonomous AI workforce' without operational context.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Reframe GTM from tech-first to business-driver-first: 'shrink backlog,' 'accelerate onboarding,' 'simplify audits.'</li><li style='margin-bottom:6px;'>Align sales pitches, website, content themes with drivers so every mention reinforces specific outcomes.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Trust gap between AI decisioning and governance expectations</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Perplexity notes boards and CISOs demand human validation. If Magnitude's messaging over-emphasizes autonomy without clarifying human control, it misaligns with how US enterprises operate.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Reposition AI agents as 'always-on analysts' with human-in-the-loop controls.</li><li style='margin-bottom:6px;'>Publish governance blueprints: approval workflows, overrides, logging, accountability.</li><li style='margin-bottom:6px;'>Make AI governance a first-class product and marketing pillar.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Mid-market 'graduating from spreadsheets' segment is under-served</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Positive drivers highlight Magnitude as attractive mid-market alternative, but Perplexity's 'moving off spreadsheets' recommendations go to Vanta, Drata, OneTrust, Mitratech/Prevalent, LogicGate.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Build a 'Graduating from spreadsheets' storyline for mid-sized US: prescriptive maturity paths, starter packages, case studies.</li><li style='margin-bottom:6px;'>Get this story on third-party blogs Perplexity cites for 'first TPRM tool' queries.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Own 'Autonomous AI Agent Workflows' before competitors contest the category</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude leads 'Autonomous AI Agent Workflows' but has effectively zero SoV. Owns the future-facing narrative but not recognized as default in generic AI/automation conversations.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Crystallize 'autonomous AI workforce for TPRM' into a defensible category with consistent language and frameworks.</li><li style='margin-bottom:6px;'>Codify a simple model (detect-decide-act agents) and publish playbooks analysts and journalists can reuse.</li><li style='margin-bottom:6px;'>Turn innovation edge into an enduring narrative advantage.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Position for both innovators AND conservative enterprises — two-track strategy</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Perplexity contrasts Magnitude's innovation with 'established vendors are the safer bet' for regulatory defensibility. Negative drivers around newer/less proven, integration complexity narrow near-term TAM.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Two-track strategy: 'co-pilot/accelerator' alongside incumbent suites for large regulated enterprises; primary system of record for mid-market/fast-growing tech.</li><li style='margin-bottom:6px;'>Provide reference architectures showing safe augmentation of existing TPRM/GRC stacks.</li></ul>
+        </div>
+      </div>
+    </div><div class="llm-pane" data-llm="gemini" style="display:none;">
+      
+      <div style="font-size:14px;color:#374151;margin-bottom:16px;"><strong>Lens:</strong> Gemini <span style='color:#6b7280;font-weight:400;font-size:12px;'>· as of 2026-08-04</span></div>
+
+      <div class="insight-grid"><div class="insight-box">
+          <h4>Own 'Overkill' Sweet Spot</h4>
+          <p>Embrace 'overkill' label with ROI thresholds on vendor counts, AI dependence, regulatory intensity vs mid-market tools.</p>
+        </div><div class="insight-box">
+          <h4>Escape Zero Share Trap</h4>
+          <p>Magnitude's generic Gemini share is effectively 0%; target top 5 TPRM categories immediately.</p>
+        </div><div class="insight-box">
+          <h4>Human-In-Loop, By Default</h4>
+          <p>Answer 4/5 AI skepticism with visible approval gates, explainability, override controls everywhere.</p>
+        </div><div class="insight-box">
+          <h4>Flood Cited Review Ecosystem</h4>
+          <p>Close gap by securing 10+ third-party reviews where Bitsight, UpGuard, Panorays dominate.</p>
+        </div></div>
+
+      <div class="chart-container">
+        <div class="chart-title">Share of Voice — Gemini</div>
+        <div class="chart-desc">Percent of Gemini responses about TPRM that mention each brand.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Share</th><th style="text-align:right;">%</th><th style="text-align:center;">Trend</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">12%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">12%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:83.33333333333334%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">10%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:75.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">9%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:25.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">3%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:16.666666666666664%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">2%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#1a56db;height:100%;width:0.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">0%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Other</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#9ca3af;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">52%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Favorable Sentiment — Gemini</div>
+        <div class="chart-desc">Percent of mentions Gemini frames favorably.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Favorable Sentiment</th><th style="text-align:right;">%</th><th style="text-align:center;">Δ</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:93%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">93%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-5</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:91%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">91%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-4</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:91%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">91%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-3</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:89%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">89%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-4</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:89%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">89%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-3</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:88%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">88%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-3</span></td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span><div style="color:#6b7280;font-size:11px;margin-top:2px;">No direct brand mentions in Gemini yet</div></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">n/a</td>
+          <td style="text-align:center;"></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Business Drivers — Gemini</div>
+        <div class="chart-desc">The buying drivers Gemini associates with TPRM tool recommendations, ranked by total mentions. "LEADS" flag means Magnitude is the top-mentioned brand in that category.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Business Driver</th><th style="text-align:right;">Total Mentions</th><th>Category Leader</th><th style="text-align:right;">Magnitude</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;">Continuous External Risk Monitoring</td>
+          <td style="text-align:right;">255</td>
+          <td>Bitsight (52) / Upguard (50)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Unified Vendor Lifecycle Automation</td>
+          <td style="text-align:right;">208</td>
+          <td>Onetrust (36)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Evidence-Based Risk Scoring</td>
+          <td style="text-align:right;">203</td>
+          <td>Bitsight (47)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Integrated Internal–External Risk View</td>
+          <td style="text-align:right;">142</td>
+          <td>Onetrust (22)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Explainable Risk Scoring & Evidence</td>
+          <td style="text-align:right;">126</td>
+          <td>Securityscorecard (27)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Executive-Ready Risk Dashboards</td>
+          <td style="text-align:right;">90</td>
+          <td>Onetrust (17)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI-Driven Evidence Analysis</td>
+          <td style="text-align:right;">75</td>
+          <td>Bitsight (11)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Dynamic Risk Tiering & Reassessment</td>
+          <td style="text-align:right;">66</td>
+          <td>Onetrust/Bitsight (5-6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Trust Portals & Self-Service Security</td>
+          <td style="text-align:right;">54</td>
+          <td>Onetrust (10)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Cyber Risk Financial Quantification</td>
+          <td style="text-align:right;">38</td>
+          <td>Bitsight (9)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Fourth-Party & Concentration Visibility</td>
+          <td style="text-align:right;">37</td>
+          <td>Bitsight (6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Dark Web & Breach Intelligence</td>
+          <td style="text-align:right;">23</td>
+          <td>Upguard (6)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">SOC SIEM & ITSM Integration</td>
+          <td style="text-align:right;">19</td>
+          <td>several tied</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Autonomous TPRM AI Agents</td>
+          <td style="text-align:right;">13</td>
+          <td>MAGNITUDE (per LLM narrative)</td>
+          <td style="text-align:right;"><strong style="color:#1a56db;">2</strong> <span style="background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;">LEADS</span></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Strategic Opportunities — Gemini</div>
+        <div class="chart-desc">LLM-extracted opportunities pulled from Gemini's actual language about Magnitude vs the competitive set. Urgent items are underlined red; medium timeframe is amber.</div>
+        <div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Codify eligibility thresholds — end the 'overkill vs disruptive savior' binary</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Gemini positions Magnitude as overkill for small/immature programs but transformative for teams facing questionnaire overload and Nth-party complexity. Lack of segmentation messaging makes it hard for buyers to self-identify.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Publish clear eligibility thresholds: vendor count, AI/SaaS dependency, regulatory complexity, headcount pain.</li><li style='margin-bottom:6px;'>Use as diagnostic criteria in content, events, discovery calls so prospects self-identify high-fit.</li><li style='margin-bottom:6px;'>Increases close rates in ideal segment and reduces low-fit 'overkill' feedback loop.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Translate autonomous AI story into mainstream business drivers</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude leads Autonomous TPRM AI Agents but is far behind on drivers buyers actually anchor around (continuous monitoring, integrated views, executive dashboards, AI-driven evidence).</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Reframe AI workforce into mainstream drivers: 'X% reduction in mean time to review SOC 2s,' 'Y% more vendors under continuous monitoring without adding staff.'</li><li style='margin-bottom:6px;'>Embed outcome metrics into all messaging and sales narratives.</li><li style='margin-bottom:6px;'>Contest the core economic arguments where established vendors currently win.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Close explainability, integration, and audit-readiness gaps to become a governance asset</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Gemini emphasizes boards demand human validation, audit trails, explainable models. Concerns about black-box AI, integration silos, config busywork show up as negatives.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Put explainability, integration, compliance reporting on equal footing with automation in messaging.</li><li style='margin-bottom:6px;'>Surface line-of-sight from each agent action to underlying evidence.</li><li style='margin-bottom:6px;'>Provide turnkey SIEM/GRC/ITSM integrations and one-click audit reports.</li><li style='margin-bottom:6px;'>Position Magnitude as strengthening governance and audit defensibility, not just working faster.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Win in Google AI Mode by marketing to machines, not just humans</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">AI assistants lean on recurring domains and brands for TPRM explanations. Magnitude only referenced when directly asked. Human-facing messaging won't translate to AI-era share of mind without machine-readable formats.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Build 'AI-aware' content: highly structured, deeply explanatory frameworks, glossaries, implementation guides using generic phrases AI models favor.</li><li style='margin-bottom:6px;'>Host on Magnitude properties AND partner domains with strong citation footprints.</li><li style='margin-bottom:6px;'>Co-author with analysts and heavily-cited practitioners; embed Magnitude concepts in neutral educational content.</li><li style='margin-bottom:6px;'>Regularly review AI responses to key TPRM queries and iteratively fill gaps.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Own 'autonomous, evidence-based TPRM' before Safe/Bitsight/Panorays define it</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude linked to Autonomous TPRM Agents, AI-Driven Assessment Automation, Continuous Monitoring, Explainable Intelligence, Nth-party mapping, Executive Dashboards — exactly the levers that matter as vendor AI risk explodes. But AI assistants default to Safe Security, Bitsight, Panorays, UpGuard, legacy GRC.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Align GTM, product storytelling, customer proof around 'autonomous, evidence-linked TPRM' thesis.</li><li style='margin-bottom:6px;'>Ensure thesis shows up in generically phrased AI answers, not just Magnitude-specific ones.</li><li style='margin-bottom:6px;'>Prioritize flagship deployments with all core drivers in play and publish detailed case stories.</li><li style='margin-bottom:6px;'>Use targeted, citable thought leadership to re-anchor AI narratives.</li></ul>
+        </div>
+      </div>
+    </div><div class="llm-pane" data-llm="google_ai_mode" style="display:none;">
+      <div style="background:#fef3c7;color:#92400e;padding:8px 14px;border-radius:4px;font-size:12px;margin-bottom:16px;"><strong>Note:</strong> SEMrush had no Google AI Mode data for Aug 4, 2026 — showing closest available date (Jul 28).</div>
+      <div style="font-size:14px;color:#374151;margin-bottom:16px;"><strong>Lens:</strong> Google AI Mode <span style='color:#6b7280;font-weight:400;font-size:12px;'>· as of 2026-07-28</span></div>
+
+      <div class="insight-grid"><div class="insight-box">
+          <h4>Out-Credible The Incumbents</h4>
+          <p>Close recognition gap with Bitsight, OneTrust via 3–5 independent benchmarks, ROI studies, regulator-friendly assurance reports annually.</p>
+        </div><div class="insight-box">
+          <h4>Manufacture Enterprise Proof At Scale</h4>
+          <p>Secure 3–5 flagship finance/healthcare case studies explicitly contrasting outcomes with OneTrust, Archer, Riskonnect in AI-visible channels.</p>
+        </div><div class="insight-box">
+          <h4>De-Risk The Career Choice</h4>
+          <p>Package Magnitude as 'autonomous overlay' blueprints on Archer, OneTrust, ServiceNow to reduce perceived switch friction by 50%.</p>
+        </div><div class="insight-box">
+          <h4>Design For AI Consumption</h4>
+          <p>Standardize structured playbooks, glossaries, diagrams using top-performing generic phrases AI surfaces in TPRM answers.</p>
+        </div></div>
+
+      <div class="chart-container">
+        <div class="chart-title">Share of Voice — Google AI Mode</div>
+        <div class="chart-desc">Percent of Google AI Mode responses about TPRM that mention each brand.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Share</th><th style="text-align:right;">%</th><th style="text-align:center;">Trend</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">12%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:91.66666666666666%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">11%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:75.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">9%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:50.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">6%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:25.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">3%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:8.333333333333332%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">1%</td>
+          <td style="text-align:center;color:#6b7280;">↓</td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#1a56db;height:100%;width:0.0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">0%</td>
+          <td style="text-align:center;color:#6b7280;">0</td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Other</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#9ca3af;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">58%</td>
+          <td style="text-align:center;color:#6b7280;">↑</td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Favorable Sentiment — Google AI Mode</div>
+        <div class="chart-desc">Percent of mentions Google AI Mode frames favorably.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Brand</th><th>Favorable Sentiment</th><th style="text-align:right;">%</th><th style="text-align:center;">Δ</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;color:#1f2937;">Vanta</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">100%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+9</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Drata</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">100%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+4</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Securityscorecard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:94%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">94%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+2</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Bitsight</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:93%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">93%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-4</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Upguard</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:92%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">92%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">-5</span></td>
+        </tr><tr>
+          <td style="font-weight:500;color:#1f2937;">Onetrust</td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#10b981;height:100%;width:92%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1f2937;text-align:right;">92%</td>
+          <td style="text-align:center;"><span style="color:#6b7280;font-size:11px;">+8</span></td>
+        </tr><tr>
+          <td style="font-weight:700;color:#1a56db;">Magnitude <span style='background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;'>YOU</span><div style="color:#6b7280;font-size:11px;margin-top:2px;">No direct Magnitude mentions in Google AI Mode yet</div></td>
+          <td style="width:60%;padding:6px 8px;">
+            <div style="background:#f3f4f6;border-radius:4px;height:20px;position:relative;">
+              <div style="background:#e5e7eb;height:100%;width:0%;border-radius:4px;"></div>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#1a56db;text-align:right;">n/a</td>
+          <td style="text-align:center;"></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Business Drivers — Google AI Mode</div>
+        <div class="chart-desc">The buying drivers Google AI Mode associates with TPRM tool recommendations, ranked by total mentions. "LEADS" flag means Magnitude is the top-mentioned brand in that category.</div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Business Driver</th><th style="text-align:right;">Total Mentions</th><th>Category Leader</th><th style="text-align:right;">Magnitude</th></tr></thead>
+          <tbody><tr>
+          <td style="font-weight:500;">Continuous Security Monitoring</td>
+          <td style="text-align:right;">271</td>
+          <td>Upguard (60)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Lifecycle Workflow Automation</td>
+          <td style="text-align:right;">247</td>
+          <td>Upguard/Onetrust (20)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Evidence-Based Risk Scoring</td>
+          <td style="text-align:right;">203</td>
+          <td>Bitsight (47) / Securityscorecard (46)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">AI-Driven Assessment Automation</td>
+          <td style="text-align:right;">150</td>
+          <td>Bitsight (16)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Regulatory & Framework Alignment</td>
+          <td style="text-align:right;">135</td>
+          <td>Onetrust (34)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Centralized Evidence & Audit Readiness</td>
+          <td style="text-align:right;">103</td>
+          <td>Vanta (10)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Integrated Threat & Breach Intelligence</td>
+          <td style="text-align:right;">94</td>
+          <td>Bitsight (16)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Executive Dashboards & Reporting</td>
+          <td style="text-align:right;">65</td>
+          <td>Securityscorecard (9)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Financial Risk Quantification</td>
+          <td style="text-align:right;">34</td>
+          <td>Bitsight (5)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Explainable Risk Intelligence</td>
+          <td style="text-align:right;">33</td>
+          <td>Securityscorecard (5)</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Fourth-Party Mapping & Concentration Insight</td>
+          <td style="text-align:right;">26</td>
+          <td>several tied</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Vendor Collaboration & Remediation Portals</td>
+          <td style="text-align:right;">24</td>
+          <td>several tied</td>
+          <td style="text-align:right;"><span style="color:#ef4444;font-weight:600;">0 (absent)</span></td>
+        </tr><tr>
+          <td style="font-weight:500;">Autonomous TPRM Agents</td>
+          <td style="text-align:right;">16</td>
+          <td>MAGNITUDE (per LLM narrative)</td>
+          <td style="text-align:right;"><strong style="color:#1a56db;">2</strong> <span style="background:#1a56db;color:white;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;">LEADS</span></td>
+        </tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">Strategic Opportunities — Google AI Mode</div>
+        <div class="chart-desc">LLM-extracted opportunities pulled from Google AI Mode's actual language about Magnitude vs the competitive set. Urgent items are underlined red; medium timeframe is amber.</div>
+        <div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Connect operational wins to financial outcomes — Magnitude has no ROI story</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude credited with 'meaningful workload reduction,' 'strong Nth-party visibility,' 'proactive remediation.' But Safe, Black Kite, and ratings vendors are more consistently associated with financial risk quantification and Open FAIR-style modeling in AI answers.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Connect operational wins (cycle-time, backlog, incidents caught) to financial outcomes with a repeatable quantification model.</li><li style='margin-bottom:6px;'>Build a 'business case pack': ROI calculator, before/after KPIs, 1–2 anonymized financial impact examples.</li><li style='margin-bottom:6px;'>Get AI assistants describing Magnitude as 'materially reducing expected loss from third-party and AI-supply-chain risk.'</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Recast Magnitude as consolidation play, not point innovation</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">AI answers recommend multi-tool stacks: ratings for monitoring, GRC for workflows, separate CLM, threat intel. Magnitude spans many drivers but rarely described as replacing point solutions.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Position Magnitude as 'autonomous control plane' — map which tools/manual processes its agents absorb.</li><li style='margin-bottom:6px;'>Create 'Traditional stack vs Magnitude stack' comparative archetypes with concrete customer data.</li><li style='margin-bottom:6px;'>Seed into analyst briefings, CISO councils, public content so AI surfaces Magnitude in tool-consolidation answers.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #f59e0b;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Market to machines as much as humans — encode narratives for LLM ingestion</h4>
+            <span style="background:#f59e0b;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">medium</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">AI assistants lean on recurring domains for TPRM explanations. Magnitude only referenced when directly asked. Perfect human-facing messaging won't translate without machine-readable formats.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Produce highly structured, deeply explanatory frameworks, glossaries, implementation guides.</li><li style='margin-bottom:6px;'>Host on Magnitude AND partner domains with strong citation footprints.</li><li style='margin-bottom:6px;'>Co-author with cited analysts and practitioners.</li><li style='margin-bottom:6px;'>Iteratively review AI responses and fill gaps.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Own 'autonomous, evidence-based TPRM' for AI-intensive enterprises</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">Magnitude already linked to Autonomous Agents, AI-Driven Assessment, Continuous Monitoring, Explainable Intelligence, Nth-party mapping, Executive Dashboards — but AI defaults to Safe, Bitsight, Panorays, UpGuard, legacy GRC.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Align GTM around 'autonomous, evidence-linked TPRM' thesis; ensure it shows up in generically phrased AI answers.</li><li style='margin-bottom:6px;'>Prioritize flagship deployments with all drivers in play; publish detailed case stories.</li><li style='margin-bottom:6px;'>Use targeted citable thought leadership to re-anchor AI narratives.</li></ul>
+        </div><div class="threat-card" style="border-left:4px solid #ef4444;margin-bottom:16px;padding:16px 20px;background:white;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="color:#111827;font-size:15px;">Neutralize legacy-suite consolidation before it hardens</h4>
+            <span style="background:#ef4444;color:white;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;">urgent</span>
+          </div>
+          <p style="color:#4b5563;font-size:13px;margin-bottom:10px;line-height:1.5;">AI responses emphasize enterprises consolidating into OneTrust/Archer/ServiceNow and layering AI. Familiarity and lower friction are negatives for Magnitude. Risk: differentiators become adjuncts to someone else's stack.</p>
+          <div style="font-size:12px;color:#374151;font-weight:600;margin-bottom:4px;">Recommendations:</div>
+          <ul style="margin-left:18px;color:#4b5563;font-size:13px;line-height:1.5;"><li style='margin-bottom:6px;'>Design for low friction: rapid pilots, low-risk overlays, 'no-regret' use cases (Nth-party visibility, agentic monitoring for critical vendor sets).</li><li style='margin-bottom:6px;'>Make it trivial for CISOs to experiment without political/integration risk.</li><li style='margin-bottom:6px;'>Convert pilots into referenceable modern-stack stories; feed into channels AI trusts.</li></ul>
+        </div>
+      </div>
+    </div></div>
+
+      <div class="insight-grid" style="margin-top:24px;">
+        <div class="insight-box">
+          <h4>Consistent across all 4 LLMs</h4>
+          <p>Magnitude registers <strong>0% Share of Voice</strong> on ChatGPT, Perplexity, Gemini, and Google AI Mode. The competitive top-3 differs by lens — Bitsight leads on ChatGPT and Google AI Mode, Onetrust ties/leads on Perplexity and Gemini — but the incumbent set is the same 6 brands across all four.</p>
+        </div>
+        <div class="insight-box">
+          <h4>Magnitude owns Autonomous TPRM Agents everywhere</h4>
+          <p>In every LLM, Magnitude is called out as the leader of the "Autonomous TPRM Agents" business driver — the one lane where Magnitude has explicit category ownership. This is defensible ground: build the moat before Vanta, Drata, or a new entrant contests it with their own AI narrative.</p>
+        </div>
+        <div class="insight-box">
+          <h4>Sentiment: ChatGPT is the outlier</h4>
+          <p>ChatGPT is the only LLM with any Magnitude sentiment data (50% favorable, split with neutrals). Perplexity, Gemini, and Google AI Mode return "no brand mentions" for sentiment — Magnitude isn't triggering enough responses for sentiment to compute. Volume of mentions is the prerequisite before sentiment can be moved.</p>
+        </div>
+        <div class="insight-box">
+          <h4>Same recommendations, different urgency</h4>
+          <p>All four lenses converge on the same three plays: (1) AI governance/trust proof as first-class product, (2) codified reference architectures and named-customer deployments, (3) machine-readable content that LLMs can ingest for generic TPRM queries. Google AI Mode is the highest-leverage lens to target first — it feeds the widest Google user base.</p>
+        </div>
+      </div>
+
+      <div style="background:#f9fafb;border-radius:6px;padding:14px 18px;margin-top:20px;font-size:12px;color:#6b7280;">
+        <strong style="color:#374151;">Source:</strong> SEMrush AI Visibility — Brand Performance module · US/English market · captured August 12, 2026. Google AI Mode data reflects Jul 28, 2026 (closest available date). Data reflects each LLM's actual output patterns about the tracked brand set over SEMrush's monitoring window.
+      </div>
+    </section>
+
+    <!-- 11. STRATEGIC THREATS -->
     <section id="threats" class="section">
       <h2 class="section-title">Strategic Threats &amp; Insights</h2>
       <p class="section-desc">The competitive picture distilled into prioritized action items. Severity reflects size of the gap and speed at which it is widening.</p>
@@ -1402,13 +2595,13 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
             <span class="threat-severity warning">Warning</span>
             <span class="threat-title">Drata's collapse fully reversed — they integrated SafeBase and are climbing again</span>
           </div>
-          <div class="threat-body">Drata's US organic traffic is now <strong>42,463/mo</strong>, fully recovered from the early-June trough of 18,478. The homepage rebounded from 2,428 → 21,508 visits in just 6 days — the brand-search collapse was a 2-week phenomenon, not a structural issue. Drata also launched <code>/safebase</code> (driving 1,027 visits/mo) — they've integrated the SafeBase TPRM trust-center platform. Drata is now expanding directly into Magnitude's TPRM territory while also recovering core traffic. The brief opportunity window from 6 weeks ago is closed; assume Drata is operating at full speed.</div>
+          <div class="threat-body">Drata's US organic traffic is now <strong>47,699/mo</strong>, fully recovered from the early-June trough of 18,478. The homepage rebounded from 2,428 → 21,508 visits in just 6 days — the brand-search collapse was a 2-week phenomenon, not a structural issue. Drata also launched <code>/safebase</code> (driving 1,027 visits/mo) — they've integrated the SafeBase TPRM trust-center platform. Drata is now expanding directly into Magnitude's TPRM territory while also recovering core traffic. The brief opportunity window from 6 weeks ago is closed; assume Drata is operating at full speed.</div>
         </div><div class="threat-card">
           <div class="threat-header critical">
             <span class="threat-severity critical">Critical</span>
             <span class="threat-title">Vanta is publishing fast — 4 AIO-cited URLs and a brand new /resources/best-TPRM page</span>
           </div>
-          <div class="threat-body">Vanta now has <strong>4 separate URLs cited in TPRM AIOs</strong>: their Agentic TPRM product page (cited for 'tprm' AND 'best TPRM software'), a brand-new <code>/resources/best-third-party-risk-management-software</code> page that launched and got AIO-cited within days, their <code>/collection/tprm/types-of-vendor-risk</code> page (cited for 'vendor risk management'), and <code>/collection/tprm/vendor-risk-management-software</code>. Vanta's US org traffic is up <strong>+59%</strong> over 14 months. They're publishing TPRM-specific content faster than anyone else in the set and getting AIO traction within days of publishing. Speed and content velocity are the moat — Magnitude needs the editorial engine live and producing at launch.</div>
+          <div class="threat-body">Vanta now has <strong>4 separate URLs cited in TPRM AIOs</strong>: their Agentic TPRM product page (cited for 'tprm' AND 'best TPRM software'), a brand-new <code>/resources/best-third-party-risk-management-software</code> page that launched and got AIO-cited within days, their <code>/collection/tprm/types-of-vendor-risk</code> page (cited for 'vendor risk management'), and <code>/collection/tprm/vendor-risk-management-software</code>. Vanta's US org traffic is up <strong>+63%</strong> over 14 months. They're publishing TPRM-specific content faster than anyone else in the set and getting AIO traction within days of publishing. Speed and content velocity are the moat — Magnitude needs the editorial engine live and producing at launch.</div>
         </div><div class="threat-card">
           <div class="threat-header critical">
             <span class="threat-severity critical">Critical</span>
@@ -1420,19 +2613,19 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
             <span class="threat-severity warning">Warning</span>
             <span class="threat-title">Safe Security is quietly building a serious TPRM-adjacent content moat</span>
           </div>
-          <div class="threat-body">Safe Security (DR 72, 30,299 US org traffic/mo) is the strongest content player among the four named direct rivals. Their top page drives <strong>6,813 visits/mo</strong> on "what is a vulnerability scan"; the next ranks <strong>221 keywords</strong> on a single vulnerability scanning guide. They also acquired Balbix (per their /press-release/ that drives 597 visits/mo). Refdomains grew <strong>+143%</strong> in 14 months; DR climbed <strong>+10 points</strong> (58 → 71). Their TPRM page itself is thin, but the broader vulnerability-management editorial footprint is real and growing. Magnitude needs to think of Safe Security as a content competitor, not just a positioning competitor.</div>
+          <div class="threat-body">Safe Security (DR 71, 21,895 US org traffic/mo) is the strongest content player among the four named direct rivals. Their top page drives <strong>6,813 visits/mo</strong> on "what is a vulnerability scan"; the next ranks <strong>221 keywords</strong> on a single vulnerability scanning guide. They also acquired Balbix (per their /press-release/ that drives 597 visits/mo). Refdomains grew <strong>+128%</strong> in 14 months; DR climbed <strong>+9 points</strong> (58 → 71). Their TPRM page itself is thin, but the broader vulnerability-management editorial footprint is real and growing. Magnitude needs to think of Safe Security as a content competitor, not just a positioning competitor.</div>
         </div><div class="threat-card">
           <div class="threat-header opportunity">
             <span class="threat-severity opportunity">Opportunity</span>
             <span class="threat-title">Three named direct rivals have effectively zero SEO footprint — Magnitude can outrun them</span>
           </div>
-          <div class="threat-body">Lema (12/mo US traffic, DR 32), Zania (79/mo, DR 25), and Whistic (2,438/mo but 99% branded — only 5 ranking keywords) all have negligible non-branded SEO presence today. Whistic has DR 72 but barely any informational content (compare to Panorays at DR 63 ranking #1 for "tprm"). Lema and Zania are pre-product-market-fit in SEO terms. The race against direct AI-native rivals is winnable if Magnitude publishes informational TPRM content at any reasonable cadence — these competitors are not currently optimizing for organic discovery.</div>
+          <div class="threat-body">Lema (13/mo US traffic, DR 33), Zania (79/mo, DR 25), and Whistic (3,062/mo but 99% branded — only 5 ranking keywords) all have negligible non-branded SEO presence today. Whistic has DR 72 but barely any informational content (compare to Panorays at DR 63 ranking #1 for "tprm"). Lema and Zania are pre-product-market-fit in SEO terms. The race against direct AI-native rivals is winnable if Magnitude publishes informational TPRM content at any reasonable cadence — these competitors are not currently optimizing for organic discovery.</div>
         </div><div class="threat-card">
           <div class="threat-header warning">
             <span class="threat-severity warning">Warning</span>
             <span class="threat-title">Drata is the agentic mover to watch</span>
           </div>
-          <div class="threat-body">Drata (DR 80, 42,463/mo) is now ranking for <code>drata agent</code> as an emerging branded keyword. Their /learn/compare/ hub ranks #9 for <code>best third party risk management software</code>. 14-month refdomain growth: <strong>+201%</strong> — the fastest in the highlighted set. If Drata pivots to claim 'agentic' positioning, Magnitude's "first 100% multi-agent" claim narrows fast. Beat them to TPRM-specific depth while their center of gravity is still compliance automation. The agentic narrative is contestable for ~6–12 months before someone owns it.</div>
+          <div class="threat-body">Drata (DR 80, 47,699/mo) is now ranking for <code>drata agent</code> as an emerging branded keyword. Their /learn/compare/ hub ranks #9 for <code>best third party risk management software</code>. 14-month refdomain growth: <strong>+203%</strong> — the fastest in the highlighted set. If Drata pivots to claim 'agentic' positioning, Magnitude's "first 100% multi-agent" claim narrows fast. Beat them to TPRM-specific depth while their center of gravity is still compliance automation. The agentic narrative is contestable for ~6–12 months before someone owns it.</div>
         </div><div class="threat-card">
           <div class="threat-header warning">
             <span class="threat-severity warning">Warning</span>
@@ -1450,19 +2643,19 @@ code { background: #f3f4f6; padding: 2px 6px; border-radius: 3px; font-size: 12p
             <span class="threat-severity opportunity">Opportunity</span>
             <span class="threat-title">PR-led link building is the right starting move and it's already in motion</span>
           </div>
-          <div class="threat-body">Magnitude DR jumped from 1.6 to <strong>7</strong> in the 14 days between snapshots — the biggest single-period authority move in the entire tracking period. Backlinks 302 → <strong>458</strong> (+52%), refdomains 262 → <strong>317</strong> (+21%). The seed PR is still compounding at scale. Organic keywords remain at 0 — the next milestone is the editorial hub going live so those tier-1 links convert authority into rankings. Priority: publish the 'Agentic TPRM' definitive guide immediately so the DR ascent starts converting into indexed content.</div>
+          <div class="threat-body">Magnitude DR jumped <strong>8 → 12</strong> in 8 days (+4 points — biggest single-refresh authority jump in the tracking period). Backlinks 693 → <strong>831</strong> (+20%) and refdomains 456 → <strong>515</strong> (+13%). The natural-anchor "Magnitude" is at 17 referring domains (top DR 91, Fortune). The alternate identity anchor "agentic.security" grew from 7 → 10 refdomains. Spam cluster decelerated: 222 → 228 (+6 vs prior +29 pace) — but disavow is still overdue. Priority: still the editorial hub. Authority is compounding faster than content is being published; the gap between DR and organic keywords will keep widening until Magnitude ships indexed pages.</div>
         </div>
     </section>
 
     <div class="footer">
-      <strong>Digital Reach Agency</strong> · SEO &amp; AEO Program for Magnitude · Generated July 8, 2026 · Data via Ahrefs API
+      <strong>Digital Reach Agency</strong> · SEO &amp; AEO Program for Magnitude · Generated August 12, 2026 · Data via Ahrefs API
     </div>
 
   </div>
 </div>
 
 <script>
-const labels14 = ["Jun '25", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan '26", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+const labels14 = ["Jul '25", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan '26", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
 const chartFont = { family: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif', size: 11 };
 
 const baseLineOpts = {
@@ -1481,8 +2674,8 @@ new Chart(document.getElementById('executiveBarChart'), {
   data: {
     labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"],
     datasets: [
-      { label: 'Organic Keywords', data: [0, 3655, 2809, 4723, 2669, 9, 74, 1], backgroundColor: '#1a56db', yAxisID: 'y' },
-      { label: 'Organic Traffic / mo', data: [0, 69891, 42463, 47555, 30299, 12, 2438, 79], backgroundColor: '#f59e0b', yAxisID: 'y1' }
+      { label: 'Organic Keywords', data: [0, 3399, 2602, 4345, 2640, 12, 65, 1], backgroundColor: '#1a56db', yAxisID: 'y' },
+      { label: 'Organic Traffic / mo', data: [0, 74190, 47699, 37679, 21895, 13, 3062, 79], backgroundColor: '#f59e0b', yAxisID: 'y1' }
     ]
   },
   options: {
@@ -1498,37 +2691,37 @@ new Chart(document.getElementById('executiveBarChart'), {
 
 // SoV stacked
 new Chart(document.getElementById('sovChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56dbCC", "fill": true, "tension": 0.3}, {"label": "Vanta", "data": [35.8, 38.1, 36.0, 36.1, 35.5, 35.1, 35.8, 37.1, 41.6, 36.9, 35.6, 39.5, 37.7, 36.2], "borderColor": "#f59e0b", "backgroundColor": "#f59e0bCC", "fill": true, "tension": 0.3}, {"label": "Drata", "data": [28.3, 27.7, 26.5, 26.8, 27.3, 29.2, 30.9, 31.6, 30.6, 30.3, 27.1, 21.3, 20.9, 22.1], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf6CC", "fill": true, "tension": 0.3}, {"label": "Bitsight", "data": [30.7, 28.7, 31.0, 30.3, 27.2, 25.8, 26.9, 25.1, 22.6, 21.5, 23.5, 23.2, 24.2, 24.6], "borderColor": "#06b6d4", "backgroundColor": "#06b6d4CC", "fill": true, "tension": 0.3}, {"label": "Safe Security", "data": [3.7, 3.9, 4.9, 5.3, 4.4, 5.2, 3.8, 3.8, 2.9, 9.1, 11.9, 14.2, 15.8, 15.7], "borderColor": "#14b8a6", "backgroundColor": "#14b8a6CC", "fill": true, "tension": 0.3}, {"label": "Lema AI", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#ec4899", "backgroundColor": "#ec4899CC", "fill": true, "tension": 0.3}, {"label": "Whistic", "data": [1.4, 1.5, 1.5, 1.3, 5.5, 4.6, 2.6, 2.4, 2.3, 2.1, 1.8, 1.7, 1.4, 1.3], "borderColor": "#84cc16", "backgroundColor": "#84cc16CC", "fill": true, "tension": 0.3}, {"label": "Zania", "data": [0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.0], "borderColor": "#f97316", "backgroundColor": "#f97316CC", "fill": true, "tension": 0.3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56dbCC", "fill": true, "tension": 0.3}, {"label": "Vanta", "data": [38.1, 36.0, 36.1, 35.5, 35.1, 35.8, 37.1, 41.6, 36.9, 35.6, 39.5, 37.7, 37.6, 40.2], "borderColor": "#f59e0b", "backgroundColor": "#f59e0bCC", "fill": true, "tension": 0.3}, {"label": "Drata", "data": [27.7, 26.5, 26.8, 27.3, 29.2, 30.9, 31.6, 30.6, 30.3, 27.1, 21.3, 20.9, 23.4, 25.8], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf6CC", "fill": true, "tension": 0.3}, {"label": "Bitsight", "data": [28.7, 31.0, 30.3, 27.2, 25.8, 26.9, 25.1, 22.6, 21.5, 23.5, 23.2, 24.2, 21.6, 20.4], "borderColor": "#06b6d4", "backgroundColor": "#06b6d4CC", "fill": true, "tension": 0.3}, {"label": "Safe Security", "data": [3.9, 4.9, 5.3, 4.4, 5.2, 3.8, 3.8, 2.9, 9.1, 11.9, 14.2, 15.8, 16.3, 11.9], "borderColor": "#14b8a6", "backgroundColor": "#14b8a6CC", "fill": true, "tension": 0.3}, {"label": "Lema AI", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#ec4899", "backgroundColor": "#ec4899CC", "fill": true, "tension": 0.3}, {"label": "Whistic", "data": [1.5, 1.5, 1.3, 5.5, 4.6, 2.6, 2.4, 2.3, 2.1, 1.8, 1.7, 1.4, 1.1, 1.7], "borderColor": "#84cc16", "backgroundColor": "#84cc16CC", "fill": true, "tension": 0.3}, {"label": "Zania", "data": [0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0], "borderColor": "#f97316", "backgroundColor": "#f97316CC", "fill": true, "tension": 0.3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { stacked: true, beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: chartFont } } } }
 });
 
 // Raw traffic (log)
 new Chart(document.getElementById('rawTrafficChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [43658, 45436, 42603, 48268, 47233, 44491, 44965, 50252, 61330, 57119, 57171, 61839, 67093, 69626], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [34580, 33094, 31360, 35903, 36388, 37020, 38799, 42834, 45049, 46891, 43531, 33394, 37128, 42464], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [37443, 34274, 36682, 40584, 36137, 32679, 33859, 33972, 33241, 33188, 37686, 36334, 43073, 47353], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [4539, 4614, 5849, 7150, 5880, 6654, 4719, 5174, 4202, 14102, 19020, 22254, 28042, 30243], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [1, 5, 0, 3, 0, 1, 1, 0, 1, 6, 9, 18, 14, 12], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [1764, 1818, 1768, 1770, 7363, 5862, 3214, 3243, 3429, 3294, 2925, 2709, 2568, 2438], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [56, 54, 54, 61, 95, 88, 85, 81, 78, 80, 83, 89, 88, 79], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [45436, 42603, 48268, 47233, 44491, 44965, 50252, 61330, 57119, 57171, 61839, 67093, 67901, 74190], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [33094, 31360, 35903, 36388, 37020, 38799, 42834, 45049, 46891, 43531, 33394, 37128, 42339, 47699], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [34274, 36682, 40584, 36137, 32679, 33859, 33972, 33241, 33188, 37686, 36334, 43073, 38951, 37679], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [4614, 5849, 7150, 5880, 6654, 4719, 5174, 4202, 14102, 19020, 22254, 28042, 29528, 21895], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [5, 0, 3, 0, 1, 1, 0, 1, 6, 9, 18, 14, 9, 13], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [1818, 1768, 1770, 7363, 5862, 3214, 3243, 3429, 3294, 2925, 2709, 2568, 1910, 3062], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [54, 54, 61, 95, 88, 85, 81, 78, 80, 83, 89, 88, 79, 79], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
 });
 
 // Traffic value (log)
 new Chart(document.getElementById('trafficValueChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [441.1, 457.5, 433.7, 485.0, 477.0, 448.4, 437.9, 475.1, 538.8, 500.4, 511.5, 528.3, 553.1, 563.9], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [502.6, 511.0, 484.2, 525.1, 535.2, 537.1, 543.8, 589.0, 596.4, 608.0, 650.5, 503.2, 526.6, 620.4], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [156.6, 138.0, 142.7, 167.3, 158.9, 140.6, 134.1, 140.8, 145.8, 147.1, 164.2, 159.0, 149.2, 165.8], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [11.7, 11.5, 12.3, 13.7, 11.0, 9.3, 8.2, 9.0, 10.1, 39.7, 62.7, 75.1, 94.4, 101.9], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.2, 0.2], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [4.4, 4.8, 4.7, 4.8, 6.7, 5.9, 4.7, 5.1, 5.2, 5.1, 4.7, 4.4, 4.5, 4.5], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [457.5, 433.7, 485.0, 477.0, 448.4, 437.9, 475.1, 538.8, 500.4, 511.5, 528.3, 553.1, 569.8, 599.0], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [511.0, 484.2, 525.1, 535.2, 537.1, 543.8, 589.0, 596.4, 608.0, 650.5, 503.2, 526.6, 627.0, 547.6], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [138.0, 142.7, 167.3, 158.9, 140.6, 134.1, 140.8, 145.8, 147.1, 164.2, 159.0, 149.2, 168.7, 178.8], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [11.5, 12.3, 13.7, 11.0, 9.3, 8.2, 9.0, 10.1, 39.7, 62.7, 75.1, 94.4, 110.9, 108.1], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.2, 0.1, 0.1], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [4.8, 4.7, 4.8, 6.7, 5.9, 4.7, 5.1, 5.2, 5.1, 4.7, 4.4, 4.5, 5.0, 7.6], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic', ticks: { callback: v => '$' + v + 'K', font: chartFont } } } }
 });
 
 // DR history
 new Chart(document.getElementById('drChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.6, 7], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [80, 80, 80, 81, 83, 84, 84, 85, 85, 85, 86, 86, 87, 86], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [77, 77, 77, 77, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [75, 75, 75, 76, 75, 75, 75, 75, 76, 76, 76, 76, 76, 77], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [62, 62, 63, 64, 66, 67, 67, 68, 68, 70, 71, 71, 71, 72], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [16, 18, 17, 18, 19, 19, 17, 17, 23, 30, 31, 34, 34, 32], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 71, 72, 72, 72], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [19, 18, 20, 20, 25, 26, 26, 26, 25, 25, 25, 24, 25, 25], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1.6, 7, 12], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [80, 80, 81, 83, 84, 84, 85, 85, 85, 86, 86, 86, 87, 87], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [77, 77, 77, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [75, 75, 76, 75, 75, 75, 75, 76, 76, 76, 76, 77, 76, 76], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [62, 63, 64, 66, 67, 67, 68, 68, 70, 71, 71, 72, 71, 71], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [18, 17, 18, 19, 19, 17, 17, 23, 30, 31, 34, 34, 33, 33], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [72, 72, 72, 72, 72, 72, 72, 72, 72, 71, 72, 72, 71, 71], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [18, 20, 20, 25, 26, 26, 26, 25, 25, 25, 24, 25, 25, 25], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { beginAtZero: true, max: 100, ticks: { font: chartFont } } } }
 });
 
 // Refdomains
 new Chart(document.getElementById('refdChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [21, 25, 25, 25, 28, 29, 33, 42, 33, 23, 43, 179, 304, 317], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [4751, 4895, 5358, 6066, 6622, 6869, 7426, 8136, 8176, 9150, 9454, 10519, 11200, 11395], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [2931, 2948, 3028, 3177, 3433, 3455, 3609, 4312, 4473, 6503, 7178, 8051, 8728, 8808], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [4224, 4551, 5071, 5615, 6172, 6008, 6457, 7129, 7245, 7706, 7338, 8208, 8470, 8561], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [1153, 1271, 1327, 1410, 1475, 1378, 1474, 1455, 1472, 1938, 2199, 2628, 2768, 2799], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [23, 27, 29, 31, 34, 33, 35, 38, 55, 69, 81, 97, 108, 145], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [669, 665, 670, 714, 746, 749, 784, 773, 735, 668, 657, 848, 872, 965], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [41, 51, 51, 55, 99, 97, 98, 108, 111, 121, 126, 155, 159, 201], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [25, 25, 25, 28, 29, 33, 42, 33, 23, 43, 179, 317, 366, 515], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [4895, 5358, 6066, 6622, 6869, 7426, 8136, 8176, 9150, 9454, 10519, 11395, 11667, 11667], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [2948, 3028, 3177, 3433, 3455, 3609, 4312, 4473, 6503, 7178, 8051, 8808, 8939, 8939], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [4551, 5071, 5615, 6172, 6008, 6457, 7129, 7245, 7706, 7338, 8208, 8561, 8677, 8677], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [1271, 1327, 1410, 1475, 1378, 1474, 1455, 1472, 1938, 2199, 2628, 2799, 2896, 2896], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [27, 29, 31, 34, 33, 35, 38, 55, 69, 81, 97, 145, 163, 163], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [665, 670, 714, 746, 749, 784, 773, 735, 668, 657, 848, 965, 1030, 1030], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [51, 51, 55, 99, 97, 98, 108, 111, 121, 126, 155, 201, 201, 201], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
 });
 
 // Traffic trends (large)
 new Chart(document.getElementById('trafficTrendsChart'), {
-  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [43658, 45436, 42603, 48268, 47233, 44491, 44965, 50252, 61330, 57119, 57171, 61839, 67093, 69626], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [34580, 33094, 31360, 35903, 36388, 37020, 38799, 42834, 45049, 46891, 43531, 33394, 37128, 42464], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [37443, 34274, 36682, 40584, 36137, 32679, 33859, 33972, 33241, 33188, 37686, 36334, 43073, 47353], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [4539, 4614, 5849, 7150, 5880, 6654, 4719, 5174, 4202, 14102, 19020, 22254, 28042, 30243], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [1, 5, 0, 3, 0, 1, 1, 0, 1, 6, 9, 18, 14, 12], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [1764, 1818, 1768, 1770, 7363, 5862, 3214, 3243, 3429, 3294, 2925, 2709, 2568, 2438], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [56, 54, 54, 61, 95, 88, 85, 81, 78, 80, 83, 89, 88, 79], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
+  type: 'line', data: { labels: labels14, datasets: [{"label": "Magnitude", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "borderColor": "#1a56db", "backgroundColor": "#1a56db20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Vanta", "data": [45436, 42603, 48268, 47233, 44491, 44965, 50252, 61330, 57119, 57171, 61839, 67093, 67901, 74190], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b20", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Drata", "data": [33094, 31360, 35903, 36388, 37020, 38799, 42834, 45049, 46891, 43531, 33394, 37128, 42339, 47699], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Bitsight", "data": [34274, 36682, 40584, 36137, 32679, 33859, 33972, 33241, 33188, 37686, 36334, 43073, 38951, 37679], "borderColor": "#06b6d4", "backgroundColor": "#06b6d420", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Safe Security", "data": [4614, 5849, 7150, 5880, 6654, 4719, 5174, 4202, 14102, 19020, 22254, 28042, 29528, 21895], "borderColor": "#14b8a6", "backgroundColor": "#14b8a620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Lema AI", "data": [5, 0, 3, 0, 1, 1, 0, 1, 6, 9, 18, 14, 9, 13], "borderColor": "#ec4899", "backgroundColor": "#ec489920", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Whistic", "data": [1818, 1768, 1770, 7363, 5862, 3214, 3243, 3429, 3294, 2925, 2709, 2568, 1910, 3062], "borderColor": "#84cc16", "backgroundColor": "#84cc1620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}, {"label": "Zania", "data": [54, 54, 61, 95, 88, 85, 81, 78, 80, 83, 89, 88, 79, 79], "borderColor": "#f97316", "backgroundColor": "#f9731620", "borderWidth": 2.5, "tension": 0.3, "pointRadius": 3}] },
   options: { ...baseLineOpts, scales: { ...baseLineOpts.scales, y: { ...baseLineOpts.scales.y, type: 'logarithmic' } } }
 });
 
@@ -1550,12 +2743,12 @@ const barOpts = (log=false, ytickFmt=null) => ({
     x: { ticks: { font: chartFont, autoSkip: false, maxRotation: 30, minRotation: 30 } }
   }
 });
-new Chart(document.getElementById('barDR'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [7, 86, 80, 77, 72, 32, 72, 25], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
-new Chart(document.getElementById('barRefd'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [317, 11395, 8808, 8561, 2799, 145, 965, 201], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
-new Chart(document.getElementById('barBacklinks'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [458, 1777557, 1492743, 1867060, 16211, 394, 9805, 572], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true) });
-new Chart(document.getElementById('barTraffic'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 69891, 42463, 47555, 30299, 12, 2438, 79], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true) });
-new Chart(document.getElementById('barKW'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 3655, 2809, 4723, 2669, 9, 74, 1], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
-new Chart(document.getElementById('barValue'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 564, 620, 166, 102, 0, 5, 0], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true, v => '$' + v + 'K') });
+new Chart(document.getElementById('barDR'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [12, 87, 80, 76, 71, 33, 71, 25], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
+new Chart(document.getElementById('barRefd'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [515, 11667, 8939, 8677, 2896, 163, 1030, 201], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
+new Chart(document.getElementById('barBacklinks'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [831, 2144722, 1486896, 2170533, 16496, 452, 10204, 572], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true) });
+new Chart(document.getElementById('barTraffic'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 74190, 47699, 37679, 21895, 13, 3062, 79], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true) });
+new Chart(document.getElementById('barKW'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 3399, 2602, 4345, 2640, 12, 65, 1], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts() });
+new Chart(document.getElementById('barValue'), { type:'bar', data:{labels: ["Magnitude", "Vanta", "Drata", "Bitsight", "Safe Security", "Lema AI", "Whistic", "Zania"], datasets:[{data: [0, 599, 548, 179, 108, 0, 8, 0], backgroundColor: ["#1a56db", "#f59e0b", "#8b5cf6", "#06b6d4", "#14b8a6", "#ec4899", "#84cc16", "#f97316"]}]}, options: barOpts(true, v => '$' + v + 'K') });
 
 // Section nav
 function switchSection(sectionId, navEl) {
@@ -1564,6 +2757,15 @@ function switchSection(sectionId, navEl) {
   document.getElementById(sectionId).classList.add('active');
   if (navEl) navEl.classList.add('active');
   window.scrollTo(0, 0);
+}
+
+// SEMrush LLM tab switching
+function switchLLM(llmKey, btnEl) {
+  document.querySelectorAll('.llm-pane').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
+  document.querySelectorAll('.llm-tab-btn').forEach(b => b.classList.remove('active'));
+  const pane = document.querySelector('.llm-pane[data-llm="' + llmKey + '"]');
+  if (pane) { pane.style.display = 'block'; pane.classList.add('active'); }
+  if (btnEl) btnEl.classList.add('active');
 }
 
 // Tab switching for top pages
@@ -1593,7 +2795,7 @@ function downloadPDF() {
   document.body.classList.add('pdf-rendering');
   const opt = {
     margin: 10,
-    filename: 'magnitude-competitive-intel-July-8-2026.pdf',
+    filename: 'magnitude-competitive-intel-August-12-2026.pdf',
     image: { type: 'jpeg', quality: 0.95 },
     html2canvas: { scale: 1.5, useCORS: true, logging: false },
     jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
